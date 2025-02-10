@@ -25,6 +25,12 @@ public class Room {
         patient.scheduledEntryDay = day;
     }
 
+    public void cutPatientDays(Patient patient, int day) {
+        schedule.get(day).remove(patient);
+        patient.daysStaying /= 2;
+        schedule.get(day).add(patient);
+    }
+
     public void removePatient(Patient patient, int day) {
         if (schedule.containsKey(day)) {
             schedule.get(day).remove(patient);

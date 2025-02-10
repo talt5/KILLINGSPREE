@@ -8,6 +8,7 @@ public class Patient {
     int daysLeftToLive;
     boolean canBeDeferred;
     boolean isDeferred;
+    int daysStaying;
 //    int scheduledEntryDay;
 
     public Patient(String id, String disease, int urgency, int daysRequired, int daysLeftToLive) {
@@ -16,8 +17,9 @@ public class Patient {
         this.urgency = urgency;
         this.daysRequired = daysRequired;
         this.daysLeftToLive = daysLeftToLive;
+        this.canBeDeferred = true;
         this.isDeferred = false;
-//        this.scheduledEntryDay = -1; // עדיין לא שובץ
+        this.daysStaying = 0;
     }
 
     public boolean GetCanBeDeferred() {

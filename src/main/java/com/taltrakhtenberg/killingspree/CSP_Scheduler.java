@@ -38,8 +38,20 @@ public class CSP_Scheduler {
 
         printSchedule();
     }
-
+    //TODO: Redo the algorithm
     private int findEarliestAvailableDay(Room room, Patient patient) {
+        for (Map.Entry<Integer, List<Patient>> entry : room.schedule.entrySet()) {
+            int day = entry.getKey();
+            List<Patient> assignedPatients = entry.getValue();
+
+            for (Patient assignedPatient : assignedPatients) {
+                int assignedReleaseDay = day + assignedPatient.daysStaying;
+                if (day )
+            }
+        }
+
+
+
         for (int day = 0; day <= 100; day++) { // חיפוש עד 100 ימים קדימה
             if (room.canAssign(patient, day)) {
                 return day;
@@ -56,9 +68,9 @@ public class CSP_Scheduler {
                         room.assignPatient(patient, scheduledDay);
                         return scheduledDay;
                     }
-                    else if (assigned.GetCanBeDeferred() && assigned.daysRequired - day < assigned.daysRequired/2) {
+                    else if (assigned.GetCanBeDeferred() && assigned.daysRequired - day < assigned.daysRequired/2) { // TODO: add check if death
                         assigned.defer();
-                        room.removePatient(assigned, scheduledDay);
+                        room.cutPatientDays(assigned, scheduledDay);
                         room.assignPatient(patient, scheduledDay);
                         return scheduledDay;
                     } else if (day >= patient.daysLeftToLive) {
