@@ -7,12 +7,15 @@ public class Room {
     int capacity;
     List<String> availableEquipment;
     TreeMap<Integer, List<Patient>> schedule;
+    Map<Integer, Integer> capacityMap;
 
     public Room(String id, int capacity, List<String> availableEquipment) {
         this.id = id;
         this.capacity = capacity;
         this.availableEquipment = availableEquipment;
         this.schedule = new TreeMap<>();
+        capacityMap = new TreeMap<>();
+
     }
 
     public boolean canAssign(Patient patient, int day) {
