@@ -30,7 +30,12 @@ public class HelloApplication extends Application {
                 new Patient("P2", "Flu", 3, 5, 15),
                 new Patient("P3", "Heart Disease", 2, 7, 25),
                 new Patient("P4", "Diabetes", 5, 4, 30),
-                new Patient("P5", "Flu", 4, 6, 10)
+                new Patient("P5", "Flu", 4, 6, 10),
+                new Patient("P6", "COVID-19", 1, 10, 20),
+                new Patient("P7", "Flu", 3, 5, 15),
+                new Patient("P8", "Heart Disease", 2, 9, 10),
+                new Patient("P9", "Diabetes", 5, 4, 30),
+                new Patient("P10", "Flu", 4, 6, 10)
         );
 
         CSP_Scheduler scheduler = new CSP_Scheduler(patients, rooms);

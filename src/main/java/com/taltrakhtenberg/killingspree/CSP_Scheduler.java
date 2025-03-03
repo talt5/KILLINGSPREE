@@ -14,8 +14,6 @@ public class CSP_Scheduler {
         patientQueue.addAll(patients);
         this.rooms = rooms;
     }
-    //TODO: make the days left to live go down. or think about it at least.
-    //TODO: don't always defer patients.
     public void solve() {
         while (!patientQueue.isEmpty()) {
             Patient patient = patientQueue.poll();
@@ -25,7 +23,7 @@ public class CSP_Scheduler {
             Patient minEntryPatient = null;
 
             for (Room room : rooms) {
-                if (room.schedule.get(0) == null){
+                if (room.schedule.getOrDefault(0, new ArrayList<Patient>()).size() < room.capacity) {
                     minEntryDay = 0;
                     minEntryRoom = room;
                     minEntryPatient = null;
@@ -33,7 +31,7 @@ public class CSP_Scheduler {
                 }
                 Patient entryPatient = findEarliestAvailableDay(room, patient);
                 if (entryPatient == null) {
-                    continue;
+                    continue; // No room available him before death
                 }
                 int day = entryPatient.scheduledEntryDay + entryPatient.daysStaying;
 
@@ -43,9 +41,6 @@ public class CSP_Scheduler {
                     minEntryPatient = entryPatient;
                 }
             }
-//            System.out.println(patient.id);
-//            System.out.println(minEntryDay);
-//            System.out.println(minEntryRoom.id);
             if (minEntryDay != -1) {
                 patient.scheduledEntryDay = minEntryDay;
                 patient.daysStaying = patient.daysRequired;
@@ -60,6 +55,7 @@ public class CSP_Scheduler {
                             p.isDeferred = true;
                             p.daysStaying = p.daysStaying/2;
                             minEntryRoom.schedule.get(minEntryPatient.scheduledEntryDay).add(p);
+                            p.daysLeftToLive = p.daysLeftToLive - p.daysStaying;
                             p.daysRequired = p.daysRequired - p.daysRequired/2;
                             patientQueue.add(p);
                             break;
@@ -82,10 +78,12 @@ public class CSP_Scheduler {
         List<Patient> currentPatients = new ArrayList<>();
         recursiveFindCurrentDwellers(room, 0, currentPatients);
         int minEntryDay = Integer.MAX_VALUE;
+        int minUrgency = 0;
         Patient minPatient = null;
         for (Patient p : currentPatients) {
-            if (!p.isDeferred && p.canBeDeferred && patient.daysLeftToLive >= p.scheduledEntryDay + p.daysStaying / 2 && p.scheduledEntryDay + p.daysStaying / 2 <= minEntryDay) {
+            if (!p.isDeferred && p.canBeDeferred && patient.daysLeftToLive >= p.scheduledEntryDay + p.daysStaying / 2 && p.scheduledEntryDay + p.daysStaying / 2 <= minEntryDay && p.daysLeftToLive - p.daysStaying > patient.daysLeftToLive && minUrgency < p.daysLeftToLive - p.daysStaying) {
                 minEntryDay = p.scheduledEntryDay + p.daysStaying / 2;
+                minUrgency = p.daysLeftToLive - p.daysStaying;
                 minPatient = new Patient(p);
                 minPatient.toBeDeferred = true;
                 minPatient.daysStaying = minPatient.daysStaying/2;
