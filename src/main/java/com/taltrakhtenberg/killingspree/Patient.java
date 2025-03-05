@@ -1,9 +1,8 @@
 package com.taltrakhtenberg.killingspree;
 
 public class Patient {
-    String id;
+    int id;
     String disease;
-    int urgency;
     int daysRequired;
     int daysLeftToLive;
     boolean canBeDeferred;
@@ -12,10 +11,9 @@ public class Patient {
     int daysStaying;
     int scheduledEntryDay;
 
-    public Patient(String id, String disease, int urgency, int daysRequired, int daysLeftToLive) {
+    public Patient(int id, String disease, int daysRequired, int daysLeftToLive) {
         this.id = id;
         this.disease = disease;
-        this.urgency = urgency;
         this.daysRequired = daysRequired;
         this.daysLeftToLive = daysLeftToLive;
         this.canBeDeferred = true;
@@ -26,7 +24,6 @@ public class Patient {
     public Patient(Patient p) {
         this.id = p.id;
         this.disease = p.disease;
-        this.urgency = p.urgency;
         this.daysRequired = p.daysRequired;
         this.daysLeftToLive = p.daysLeftToLive;
         this.canBeDeferred = p.canBeDeferred;
@@ -43,5 +40,83 @@ public class Patient {
     public void defer() {
         this.daysLeftToLive *= 2;
         this.isDeferred = true;
+    }
+
+    public boolean GetIsDeferred() {
+        return isDeferred;
+    }
+
+    public int getDaysLeftToLive() {
+        return daysLeftToLive;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDisease() {
+        return disease;
+    }
+
+    public void setDisease(String disease) {
+        this.disease = disease;
+    }
+
+
+
+    public int getDaysRequired() {
+        return daysRequired;
+    }
+
+    public void setDaysRequired(int daysRequired) {
+        this.daysRequired = daysRequired;
+    }
+
+    public void setDaysLeftToLive(int daysLeftToLive) {
+        this.daysLeftToLive = daysLeftToLive;
+    }
+
+    public boolean isCanBeDeferred() {
+        return canBeDeferred;
+    }
+
+    public void setCanBeDeferred(boolean canBeDeferred) {
+        this.canBeDeferred = canBeDeferred;
+    }
+
+    public boolean isDeferred() {
+        return isDeferred;
+    }
+
+    public void setDeferred(boolean deferred) {
+        isDeferred = deferred;
+    }
+
+    public boolean isToBeDeferred() {
+        return toBeDeferred;
+    }
+
+    public void setToBeDeferred(boolean toBeDeferred) {
+        this.toBeDeferred = toBeDeferred;
+    }
+
+    public int getDaysStaying() {
+        return daysStaying;
+    }
+
+    public void setDaysStaying(int daysStaying) {
+        this.daysStaying = daysStaying;
+    }
+
+    public int getScheduledEntryDay() {
+        return scheduledEntryDay;
+    }
+
+    public void setScheduledEntryDay(int scheduledEntryDay) {
+        this.scheduledEntryDay = scheduledEntryDay;
     }
 }

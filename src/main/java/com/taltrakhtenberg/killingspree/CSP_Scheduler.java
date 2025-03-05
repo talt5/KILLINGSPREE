@@ -21,24 +21,25 @@ public class CSP_Scheduler {
             int minEntryDay = Integer.MAX_VALUE;
             Room minEntryRoom = null;
             Patient minEntryPatient = null;
-
             for (Room room : rooms) {
-                if (room.schedule.getOrDefault(0, new ArrayList<Patient>()).size() < room.capacity) {
-                    minEntryDay = 0;
-                    minEntryRoom = room;
-                    minEntryPatient = null;
-                    break;
-                }
-                Patient entryPatient = findEarliestAvailableDay(room, patient);
-                if (entryPatient == null) {
-                    continue; // No room available him before death
-                }
-                int day = entryPatient.scheduledEntryDay + entryPatient.daysStaying;
+                if (room.getDiseases().contains(patient.getDisease())) {
+                    if (room.schedule.getOrDefault(0, new ArrayList<Patient>()).size() < room.capacity) {
+                        minEntryDay = 0;
+                        minEntryRoom = room;
+                        minEntryPatient = null;
+                        break;
+                    }
+                    Patient entryPatient = findEarliestAvailableDay(room, patient);
+                    if (entryPatient == null) {
+                        continue; // No room available him before death
+                    }
+                    int day = entryPatient.scheduledEntryDay + entryPatient.daysStaying;
 
-                if (day < minEntryDay) {
-                    minEntryDay = day;
-                    minEntryRoom = room;
-                    minEntryPatient = entryPatient;
+                    if (day < minEntryDay) {
+                        minEntryDay = day;
+                        minEntryRoom = room;
+                        minEntryPatient = entryPatient;
+                    }
                 }
             }
             if (minEntryDay != -1) {
@@ -50,7 +51,7 @@ public class CSP_Scheduler {
                     Iterator<Patient> iterator = minEntryRoom.schedule.get(minEntryPatient.scheduledEntryDay).iterator();
                     while (iterator.hasNext()) {
                         Patient p = iterator.next();
-                        if (p.id.equals(minEntryPatient.id)) {
+                        if (p.id == minEntryPatient.id) {
                             iterator.remove();
                             p.isDeferred = true;
                             p.daysStaying = p.daysStaying/2;
@@ -70,7 +71,6 @@ public class CSP_Scheduler {
                 System.out.println("⚠️ לא נמצא מקום לחולה: " + patient.id);
             }
         }
-
         printSchedule();
     }
 

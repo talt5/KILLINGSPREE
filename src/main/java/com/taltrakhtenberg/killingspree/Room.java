@@ -3,17 +3,17 @@ package com.taltrakhtenberg.killingspree;
 import java.util.*;
 
 public class Room {
-    String id;
+    int id;
     int capacity;
     List<String> availableEquipment;
     TreeMap<Integer, List<Patient>> schedule;
     Map<Integer, Integer> capacityMap;
 
-    public Room(String id, int capacity, List<String> availableEquipment) {
+    public Room(int id, int capacity, List<String> availableEquipment) {
         this.id = id;
         this.capacity = capacity;
         this.availableEquipment = availableEquipment;
-        this.schedule = new TreeMap<>();
+        schedule = new TreeMap<>();
         capacityMap = new TreeMap<>();
 
     }
@@ -41,5 +41,45 @@ public class Room {
                 schedule.remove(day);
             }
         }
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public List<String> getDiseases() {
+        return availableEquipment;
+    }
+
+    public void setAvailableEquipment(List<String> availableEquipment) {
+        this.availableEquipment = availableEquipment;
+    }
+
+    public TreeMap<Integer, List<Patient>> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(TreeMap<Integer, List<Patient>> schedule) {
+        this.schedule = schedule;
+    }
+
+    public Map<Integer, Integer> getCapacityMap() {
+        return capacityMap;
+    }
+
+    public void setCapacityMap(Map<Integer, Integer> capacityMap) {
+        this.capacityMap = capacityMap;
     }
 }

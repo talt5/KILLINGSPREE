@@ -19,27 +19,39 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
+        DBmanager db = new DBmanager("testing.dibil");
         List<Room> rooms = Arrays.asList(
-                new Room("A", 2, Arrays.asList("COVID-19", "Flu")),
-                new Room("B", 1, Arrays.asList("Heart Disease")),
-                new Room("C", 3, Arrays.asList("Diabetes", "Flu"))
+                new Room(101, 2, Arrays.asList("COVID-19", "Flu")),
+                new Room(102, 1, Arrays.asList("Heart Disease")),
+                new Room(103, 3, Arrays.asList("Diabetes", "Flu"))
         );
+//        List<Room> rooms = db.getRooms();
+//        List<Patient> patients = db.getPatients();
 
         List<Patient> patients = Arrays.asList(
-                new Patient("P1", "COVID-19", 1, 10, 20),
-                new Patient("P2", "Flu", 3, 5, 15),
-                new Patient("P3", "Heart Disease", 2, 7, 25),
-                new Patient("P4", "Diabetes", 5, 4, 30),
-                new Patient("P5", "Flu", 4, 6, 10),
-                new Patient("P6", "COVID-19", 1, 10, 20),
-                new Patient("P7", "Flu", 3, 5, 15),
-                new Patient("P8", "Heart Disease", 2, 9, 10),
-                new Patient("P9", "Diabetes", 5, 4, 30),
-                new Patient("P10", "Flu", 4, 6, 10)
+                new Patient(1, "COVID-19", 10, 20),
+                new Patient(2, "Flu", 5, 15),
+                new Patient(3, "Heart Disease", 7, 25),
+                new Patient(4, "Diabetes", 4, 30),
+                new Patient(5, "Flu", 6, 10),
+                new Patient(6, "COVID-19", 10, 20),
+                new Patient(7, "Flu",  5, 15),
+                new Patient(8, "Heart Disease", 9, 10),
+                new Patient(9, "Diabetes", 4, 30),
+                new Patient(10, "Flu", 6, 10)
         );
-
+        for  (Room room : rooms) {
+            System.out.println(db.insert(room));
+        }
+        for  (Patient patient : patients) {
+            System.out.println(db.insert(patient));
+        }
         CSP_Scheduler scheduler = new CSP_Scheduler(patients, rooms);
         scheduler.solve();
+        for (Room room : rooms) {
+            System.out.println(db.insertSchedule(room));
+        }
+
         launch();
 
     }
