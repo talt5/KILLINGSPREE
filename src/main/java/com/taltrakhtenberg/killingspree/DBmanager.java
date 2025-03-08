@@ -94,6 +94,7 @@ public class DBmanager {
                 stmt.setInt(1, room.getId());
                 stmt.setInt(2, room.getCapacity());
                 stmt.executeUpdate();
+                // TODO: Make it avoid duplicating diseases.
                 insertString = "INSERT OR REPLACE INTO diseases (roomID, disease) VALUES (?,?)";
                 stmt = conn.prepareStatement(insertString);
                 for (String disease: room.getDiseases()){
@@ -152,6 +153,28 @@ public class DBmanager {
         }
         catch (SQLException e) {
             return null;
+        }
+    }
+    // TODO: Check if it actually works.
+    // Will be used for loading the VIEW's schedule probably.
+    public void getSchedule(List<Room> rooms, List<Patient> patients) {
+        try {
+            String selectString = "SELECT * FROM schedule WHERE roomID = ?";
+            PreparedStatement stmt = conn.prepareStatement(selectString);
+            for (Room room : rooms) {
+                stmt.setInt(1, room.getId());
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    int day =  rs.getInt("day");
+                    Patient p = patients.get(rs.getInt("patientID"));
+                    List<Patient> patientList = room.getSchedule().getOrDefault(day, new ArrayList<>());
+                    patientList.add(p);
+                    room.getSchedule().put(day, patientList);
+                }
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

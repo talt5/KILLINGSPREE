@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="260.0" prefWidth="376.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.taltrakhtenberg.killingspree.MainMenuController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <children>
+      <HBox alignment="CENTER" prefHeight="43.0" prefWidth="336.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#ScheduleClick" text="SCHEDULE" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="58.0" prefWidth="336.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#SaveHospitalClick" text="Save Hospital" />
+            <Separator prefHeight="4.0" prefWidth="30.0" />
+            <Button mnemonicParsing="false" text="New Hospital" />
+            <Separator prefHeight="7.0" prefWidth="30.0" />
+            <Button mnemonicParsing="false" onAction="#LoadHospitalClick" text="Load Hospital" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
