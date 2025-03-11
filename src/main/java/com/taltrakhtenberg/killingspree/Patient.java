@@ -42,6 +42,11 @@ public class Patient {
         this.isDeferred = true;
     }
 
+    @Override
+    public String toString() {
+        return "Patient id: " + id + " disease: " + disease + " daysRequired: " + daysRequired + " daysLeftToLive: " + daysLeftToLive;
+    }
+
     public boolean GetIsDeferred() {
         return isDeferred;
     }

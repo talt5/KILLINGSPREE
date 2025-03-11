@@ -5,23 +5,24 @@ import java.util.*;
 public class Room {
     int id;
     int capacity;
-    List<String> availableEquipment;
+    List<String> diseases;
     TreeMap<Integer, List<Patient>> schedule;
     Map<Integer, Integer> capacityMap;
 
-    public Room(int id, int capacity, List<String> availableEquipment) {
+    public Room(int id, int capacity, List<String> diseases) {
         this.id = id;
         this.capacity = capacity;
-        this.availableEquipment = availableEquipment;
+        this.diseases = diseases;
         schedule = new TreeMap<>();
         capacityMap = new TreeMap<>();
 
     }
 
     public boolean canAssign(Patient patient, int day) {
-        return schedule.getOrDefault(day, new ArrayList<>()).size() < capacity && availableEquipment.contains(patient.disease);
+        return schedule.getOrDefault(day, new ArrayList<>()).size() < capacity && diseases.contains(patient.disease);
     }
 
+    // Inserts a patient into the schedule in the given day
     public void assignPatient(Patient patient, int day) {
         schedule.putIfAbsent(day, new ArrayList<>());
         schedule.get(day).add(patient);
@@ -43,28 +44,20 @@ public class Room {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Room id: " + id + " capacity: " + capacity + " diseases: " + diseases.toString();
+    }
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
     public List<String> getDiseases() {
-        return availableEquipment;
-    }
-
-    public void setAvailableEquipment(List<String> availableEquipment) {
-        this.availableEquipment = availableEquipment;
+        return diseases;
     }
 
     public TreeMap<Integer, List<Patient>> getSchedule() {
@@ -73,13 +66,5 @@ public class Room {
 
     public void setSchedule(TreeMap<Integer, List<Patient>> schedule) {
         this.schedule = schedule;
-    }
-
-    public Map<Integer, Integer> getCapacityMap() {
-        return capacityMap;
-    }
-
-    public void setCapacityMap(Map<Integer, Integer> capacityMap) {
-        this.capacityMap = capacityMap;
     }
 }

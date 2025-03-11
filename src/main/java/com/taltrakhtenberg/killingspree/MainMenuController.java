@@ -13,8 +13,7 @@ public class MainMenuController {
     private Alert alert;
 
     @FXML
-    private Label welcomeText;
-    @FXML
+    // Opens an Alert for confirming the loading operation.
     protected void LoadHospitalClick(){
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Are you sure you want to LOAD hospital information?");
@@ -25,11 +24,15 @@ public class MainMenuController {
             LoadHospitalAction();
         }
     }
+    // Loads the hospital information from db into apps Lists not including schedule.
     protected void LoadHospitalAction() {
         mainApp.patients = db.getPatients();
         mainApp.rooms = db.getRooms();
+        mainApp.deleteViewAllPatients();
+        mainApp.addViewAllPatients();
     }
     @FXML
+    // Opens an Alert for confirming the saving operation.
     protected void SaveHospitalClick(){
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Are you sure you want to SAVE hospital information?");
@@ -39,6 +42,7 @@ public class MainMenuController {
             SaveHospitalAction();
         }
     }
+    // Saves the hospital information to db from apps Lists not including schedule.
     protected void SaveHospitalAction() {
         for (Room room : mainApp.rooms) {
             db.insert(room);
@@ -51,10 +55,11 @@ public class MainMenuController {
         alert.showAndWait();
     }
     @FXML
+    // Calls the func for scheduling and saves the schedule to db.
     protected void ScheduleClick(){
         mainApp.cspScheduler = new CSP_Scheduler(mainApp.patients, mainApp.rooms);
         mainApp.cspScheduler.solve();
-        for  (Room room : mainApp.rooms) {
+        for (Room room : mainApp.rooms) {
             db.insertSchedule(room);
         }
     }

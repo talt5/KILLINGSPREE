@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Accordion maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.taltrakhtenberg.killingspree.EnterDetailsScreenController">
+  <panes>
+    <TitledPane animated="false" text="Patient Creation">
+         <content>
+            <VBox prefHeight="417.0" prefWidth="598.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                     <children>
+                        <Label text="Name:" />
+                        <TextField fx:id="nameField" />
+                        <Separator orientation="VERTICAL" prefHeight="460.0" prefWidth="75.0" />
+                        <Label text="ID:" />
+                        <TextField fx:id="idField" alignment="CENTER" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                     <children>
+                        <Label text="Disease:" />
+                        <ChoiceBox fx:id="diseaseSelection" prefWidth="150.0" />
+                        <Separator orientation="VERTICAL" prefHeight="100.0" prefWidth="75.0" />
+                        <Label prefHeight="67.0" prefWidth="64.0" text="Days Left Until Transfer:" wrapText="true" />
+                        <TextField fx:id="daysLeftField" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                     <children>
+                        <Label prefHeight="41.0" prefWidth="60.0" text="Days Required:" wrapText="true" />
+                        <TextField fx:id="daysRequiredField" />
+                        <Separator orientation="VERTICAL" prefHeight="100.0" prefWidth="28.0" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="258.0" spacing="15.0">
+                           <children>
+                              <Button fx:id="saveButton" alignment="CENTER" mnemonicParsing="false" onAction="#saveButtonClick" text="Add Patient" />
+                              <Button fx:id="clearButton" maxHeight="25.0" maxWidth="82.0" mnemonicParsing="false" onAction="#clearButtonClick" prefHeight="25.0" prefWidth="82.0" text="Clear" />
+                           </children>
+                        </HBox>
+                     </children></HBox>
+               </children>
+            </VBox>
+         </content>
+    </TitledPane>
+    <TitledPane animated="false" text="Room Creation">
+         <content>
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+         </content>
+    </TitledPane>
+  </panes>
+</Accordion>

@@ -10,6 +10,7 @@ public class DBmanager {
     public DBmanager(String filename) {
         initDB(filename);
     }
+    // Loads or creates the database.
     public void initDB(String filename){
         String url = "jdbc:sqlite:" + filename;
         try {
@@ -50,7 +51,9 @@ public class DBmanager {
             throw new RuntimeException(e);
         }
     }
+    // Inserting the rooms schedule to db
     public int insertSchedule(Room room) {
+        // Need to delete all entries first, the whole schedule will change when adding or removing hospital objects.
         String deleteAll = "DELETE FROM schedule  WHERE roomID = (?)";
         String insertString = "INSERT INTO schedule (day,roomID,patientID) VALUES (?, ?, ?)";
         PreparedStatement stmt;
@@ -75,6 +78,7 @@ public class DBmanager {
             return -1;
         }
     }
+    // Inserts a room or a patient to db
     public int insert(Object object){
         String insertString;
         PreparedStatement stmt;
@@ -115,6 +119,7 @@ public class DBmanager {
         }
         return 1;
     }
+    // Creates a List of rooms from the database
     public List<Room> getRooms() {
         try {
             String selectAll = "SELECT * FROM room";
@@ -130,8 +135,11 @@ public class DBmanager {
                 while (rsDiseases.next()) {
                     diseases.add(rsDiseases.getString("disease"));
                 }
-                System.out.println(diseases);
                 rooms.add(new Room(rsRooms.getInt("id"), rsRooms.getInt("capacity"), diseases));
+            }
+            // For testing
+            for (Room room : rooms) {
+                System.out.println(room);
             }
             return rooms;
         }
@@ -139,7 +147,7 @@ public class DBmanager {
             return null;
         }
     }
-
+    // Creates a list of patients from the database
     public List<Patient> getPatients() {
         try {
             String selectAll = "SELECT * FROM patient";
@@ -149,6 +157,10 @@ public class DBmanager {
             while(rsPatients.next()) {
                 patients.add(new Patient(rsPatients.getInt("id"), rsPatients.getString("disease"), rsPatients.getInt("daysRequired"), rsPatients.getInt("daysLeftToLive")));
             }
+            // For testing
+            for (Patient patient : patients) {
+                System.out.println(patient);
+            }
             return patients;
         }
         catch (SQLException e) {
@@ -156,7 +168,8 @@ public class DBmanager {
         }
     }
     // TODO: Check if it actually works.
-    // Will be used for loading the VIEW's schedule probably.
+    // Will be used for loading the VIEW's schedule when ui is ready.
+    // Inserts the schedule from the db into every room's schedule list.
     public void getSchedule(List<Room> rooms, List<Patient> patients) {
         try {
             String selectString = "SELECT * FROM schedule WHERE roomID = ?";
@@ -177,5 +190,36 @@ public class DBmanager {
             e.printStackTrace();
         }
     }
-
+    // Deletes a room or patient from the database
+    public int delete(Object object){
+        try {
+            PreparedStatement stmt;
+            String deleteString;
+            // Delete patient from db
+            if (object instanceof Patient patient) {
+                deleteString = "DELETE FROM patient WHERE id = ?";
+                stmt = conn.prepareStatement(deleteString);
+                stmt.setInt(1, patient.getId());
+                stmt.executeUpdate();
+                return 1;
+            }
+            // Delete room form db including its diseases list
+            else if (object instanceof Room room) {
+                // Deletes room
+                deleteString = "DELETE FROM room WHERE id = ?";
+                stmt = conn.prepareStatement(deleteString);
+                stmt.setInt(1, room.getId());
+                stmt.executeUpdate();
+                // Deletes the diseases list
+                deleteString = "DELETE FROM diseases WHERE roomID = ?";
+                stmt = conn.prepareStatement(deleteString);
+                stmt.setInt(1, room.getId());
+                return 1;
+            }
+            return 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }
