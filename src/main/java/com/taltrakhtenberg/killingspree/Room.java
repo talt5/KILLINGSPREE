@@ -12,7 +12,7 @@ public class Room {
     public Room(int id, int capacity, List<String> diseases) {
         this.id = id;
         this.capacity = capacity;
-        this.diseases = diseases;
+        this.diseases = new ArrayList<>(diseases);
         schedule = new TreeMap<>();
         capacityMap = new TreeMap<>();
 

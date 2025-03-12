@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
 <Accordion maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.taltrakhtenberg.killingspree.EnterDetailsScreenController">
   <panes>
@@ -15,7 +16,7 @@
                         <TextField fx:id="nameField" />
                         <Separator orientation="VERTICAL" prefHeight="460.0" prefWidth="75.0" />
                         <Label text="ID:" />
-                        <TextField fx:id="idField" alignment="CENTER" />
+                        <TextField fx:id="patientIdField" alignment="CENTER" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
@@ -34,8 +35,8 @@
                         <Separator orientation="VERTICAL" prefHeight="100.0" prefWidth="28.0" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="258.0" spacing="15.0">
                            <children>
-                              <Button fx:id="saveButton" alignment="CENTER" mnemonicParsing="false" onAction="#saveButtonClick" text="Add Patient" />
-                              <Button fx:id="clearButton" maxHeight="25.0" maxWidth="82.0" mnemonicParsing="false" onAction="#clearButtonClick" prefHeight="25.0" prefWidth="82.0" text="Clear" />
+                              <Button fx:id="patientSaveButton" alignment="CENTER" mnemonicParsing="false" onAction="#saveButtonClick" text="Add Patient" />
+                              <Button fx:id="patientClearButton" maxHeight="25.0" maxWidth="82.0" mnemonicParsing="false" onAction="#clearButtonClick" prefHeight="25.0" prefWidth="82.0" text="Clear" />
                            </children>
                         </HBox>
                      </children></HBox>
@@ -45,7 +46,53 @@
     </TitledPane>
     <TitledPane animated="false" text="Room Creation">
          <content>
-            <VBox prefHeight="200.0" prefWidth="100.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="15.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="CENTER" VBox.vgrow="NEVER">
+                           <children>
+                              <Label text="All Diseases:" />
+                           </children>
+                        </HBox>
+                        <ListView fx:id="allDiseasesLV" prefHeight="200.0" prefWidth="200.0" />
+                        <HBox alignment="CENTER" spacing="15.0" VBox.vgrow="NEVER">
+                           <children>
+                              <Label text="Room ID:" />
+                              <TextField fx:id="roomIdField" />
+                           </children>
+                        </HBox>
+                     </children></VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="229.0" prefWidth="100.0">
+                           <children>
+                              <SVGPath content="M25,58.558h23v14c0,0.794,0.47,1.513,1.196,1.832c0.259,0.113,0.532,0.168,0.804,0.168c0.492,0,0.978-0.182,1.354-0.528   l25-23C76.766,50.651,77,50.117,77,49.558s-0.234-1.093-0.646-1.472l-25-23c-0.585-0.538-1.43-0.678-2.158-0.36   C48.47,25.045,48,25.764,48,26.558v14H25c-1.104,0-2,0.896-2,2v14C23,57.662,23.896,58.558,25,58.558z" />
+                           </children></VBox>
+                        <VBox alignment="CENTER" spacing="15.0" VBox.vgrow="NEVER">
+                           <children>
+                              <Button fx:id="roomSaveButton" mnemonicParsing="false" onAction="#saveRoomButtonClick" text="Add Room" />
+                              <Button fx:id="roomClearButton" mnemonicParsing="false" onAction="#clearRoomButtonClick" text="Clear" />
+                           </children>
+                        </VBox>
+                     </children></VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="15.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="CENTER" VBox.vgrow="NEVER">
+                           <children>
+                              <Label text="Selected Diseases:" />
+                           </children>
+                        </HBox>
+                        <ListView fx:id="selectedDiseasesLV" prefHeight="200.0" prefWidth="200.0" />
+                        <HBox alignment="CENTER" spacing="15.0" VBox.vgrow="NEVER">
+                           <children>
+                              <Label text="Capacity:" />
+                              <TextField fx:id="roomCapacityField" />
+                           </children>
+                        </HBox>
+                     </children></VBox>
+               </children>
+            </HBox>
          </content>
     </TitledPane>
   </panes>

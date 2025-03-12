@@ -21,12 +21,12 @@ public class HelloApplication extends Application {
     @Override
     // Initializes all the screens.
     public void start(Stage stage) throws IOException {
-        rooms = null;
-        patients = null;
+        rooms = new ArrayList<>();
+        patients = new ArrayList<>();
         db = new DBmanager("testing.db");
 
         // Delete "testing()" after testing.
-        testing();
+        //testing();
         // Loading Screens
         // Main menu
         FXMLLoader MainMenu = new FXMLLoader(HelloApplication.class.getResource("MainMenu.fxml"));
@@ -87,6 +87,12 @@ public class HelloApplication extends Application {
         patients.add(p);
         db.insert(p);
         PSController.createPatientObject(p);
+    }
+
+    public void addRoom(Room r) {
+        rooms.add(r);
+        db.insert(r);
+        // TODO: ADD TO ROOM CONTROLLER
     }
     /*
     INSTRUCTIONS FOR FIRST RUN - Until UI is ready:
