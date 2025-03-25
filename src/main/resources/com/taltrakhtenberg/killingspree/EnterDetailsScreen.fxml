@@ -16,7 +16,7 @@
                         <TextField fx:id="nameField" />
                         <Separator orientation="VERTICAL" prefHeight="460.0" prefWidth="75.0" />
                         <Label text="ID:" />
-                        <TextField fx:id="patientIdField" alignment="CENTER" />
+                        <TextField fx:id="patientIdField" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">

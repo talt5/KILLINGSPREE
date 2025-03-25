@@ -58,10 +58,10 @@ public class MainMenuController {
     // Calls the func for scheduling and saves the schedule to db.
     protected void ScheduleClick(){
         mainApp.cspScheduler = new CSP_Scheduler(mainApp.patients, mainApp.rooms);
-        mainApp.cspScheduler.solve();
-        for (Room room : mainApp.rooms) {
-            db.insertSchedule(room);
-        }
+        mainApp.cspScheduler.schedule();
+//        for (Room room : mainApp.rooms) {
+//            db.insertSchedule(room);
+//        }
     }
     public void init(DBmanager db, HelloApplication mainApp) {
         this.db = db;

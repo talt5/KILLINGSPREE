@@ -26,7 +26,7 @@ public class HelloApplication extends Application {
         db = new DBmanager("testing.db");
 
         // Delete "testing()" after testing.
-        //testing();
+        testing();
         // Loading Screens
         // Main menu
         FXMLLoader MainMenu = new FXMLLoader(HelloApplication.class.getResource("MainMenu.fxml"));
@@ -36,6 +36,7 @@ public class HelloApplication extends Application {
         stage.setTitle("Main Menu");
         stage.setScene(MMscene);
         stage.show();
+
         // Patient List Screen
         FXMLLoader PatientScreen = new FXMLLoader(HelloApplication.class.getResource("PatientScreen.fxml"));
         Scene PSscene = new Scene(PatientScreen.load(), 300, 400);
@@ -57,8 +58,12 @@ public class HelloApplication extends Application {
         EDSStage.setTitle("Add to system");
         EDSStage.setScene(EDSScene);
         EDSStage.show();
+        EDSStage.resizableProperty().setValue(false);
         EDSStage.setX(stage.getX());
         EDSStage.setY(stage.getY() - EDSStage.getHeight());
+
+        // Room List Screen
+
 
     }
     // Adds all the patients from the List to the ui.
@@ -107,8 +112,8 @@ public class HelloApplication extends Application {
     public void testing(){
         rooms = Arrays.asList(
                 new Room(101, 2, Arrays.asList("COVID-19", "Flu")),
-                new Room(102, 1, Arrays.asList("Heart Disease")),
-                new Room(103, 3, Arrays.asList("Diabetes", "Flu"))
+                new Room(102, 1, Arrays.asList("Heart Disease"))
+                //new Room(103, 3, Arrays.asList("Diabetes", "Flu"))
         );
         patients = Arrays.asList(
                 new Patient(1, "COVID-19", 10, 20),
