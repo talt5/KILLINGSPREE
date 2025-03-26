@@ -2,6 +2,7 @@ package com.taltrakhtenberg.killingspree;
 
 import javafx.fxml.FXML;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -43,10 +44,12 @@ public class PatientScreenController {
                 "-fx-border-width: 3;\n" +
                 "-fx-border-style: solid inside;\n";
         patientVBOX.setStyle(cssLayout);
-        Label pID = new Label(String.valueOf(p.getId()));
-        Label pDisease = new Label(p.getDisease());
-        Label pDaysReq = new Label(String.valueOf(p.getDaysRequired()));
-        Label pDaysLeft = new Label(String.valueOf(p.getDaysLeftToLive()));
+        patientVBOX.setSpacing(5);
+        patientVBOX.setAlignment(Pos.CENTER);
+        Label pID = new Label("ID: " + p.getId());
+        Label pDisease = new Label("Disease: " + p.getDisease());
+        Label pDaysReq = new Label("Days Required: " + p.getDaysRequired());
+        Label pDaysLeft = new Label("Days Left: " + p.getDaysLeftToLive());
         patientVBOX.getChildren().add(pID);
         patientVBOX.getChildren().add(pDisease);
         patientVBOX.getChildren().add(pDaysReq);

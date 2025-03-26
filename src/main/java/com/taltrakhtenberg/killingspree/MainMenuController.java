@@ -29,7 +29,9 @@ public class MainMenuController {
         mainApp.patients = db.getPatients();
         mainApp.rooms = db.getRooms();
         mainApp.deleteViewAllPatients();
+        mainApp.deleteViewAllRooms();
         mainApp.addViewAllPatients();
+        mainApp.addViewAllRooms();
     }
     @FXML
     // Opens an Alert for confirming the saving operation.

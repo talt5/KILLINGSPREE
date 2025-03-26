@@ -1,12 +1,9 @@
 package com.taltrakhtenberg.killingspree;
 
-import javafx.scene.shape.PathElement;
-
 import java.util.*;
 
 public class CSP_Scheduler {
-    PriorityQueue<Patient> patientQueue;
-    List<Patient> patients;
+    List<Patient> patients; // maybe make it a linked list?
     List<Room> rooms;
     Map<String, Set<String>> diseaseIncompatibility;
     int planningHorizon;
