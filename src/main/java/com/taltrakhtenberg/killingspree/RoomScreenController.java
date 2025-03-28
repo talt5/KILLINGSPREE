@@ -16,7 +16,7 @@ public class RoomScreenController {
     private HelloApplication mainApp;
     @FXML
     private VBox mainVBox;
-    private TilePane mainRoomTilePane;
+    private TilePane mainTilePane;
     private HashMap<Integer, VBox> roomsObj;
 
 
@@ -26,8 +26,8 @@ public class RoomScreenController {
         roomsObj = new HashMap<>();
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToWidth(true);
-        mainRoomTilePane = new TilePane();
-        scrollPane.setContent(mainRoomTilePane);
+        mainTilePane = new TilePane();
+        scrollPane.setContent(mainTilePane);
         mainVBox.getChildren().add(scrollPane);
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
     }
@@ -54,12 +54,12 @@ public class RoomScreenController {
         roomVBOX.getChildren().add(diseaseLabel);
         roomVBOX.getChildren().add(diseasesListView);
 
-        mainRoomTilePane.getChildren().add(roomVBOX);
+        mainTilePane.getChildren().add(roomVBOX);
         roomsObj.put(r.getId(), roomVBOX);
     }
 
-    public TilePane getMainRoomTilePane() {
-        return mainRoomTilePane;
+    public TilePane getMainTilePane() {
+        return mainTilePane;
     }
 
     public HashMap<Integer, VBox> getRoomsObj() {

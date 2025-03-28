@@ -83,7 +83,7 @@ public class EnterDetailsScreenController {
 
     @FXML
     // Adds the patient to the system.
-    protected void saveButtonClick(){
+    private void saveButtonClick(){
         String name = nameField.getText();
         int id = Integer.parseInt(patientIdField.getText());
         int daysLeft = Integer.parseInt(daysLeftField.getText());
@@ -97,7 +97,7 @@ public class EnterDetailsScreenController {
 
     // Clears the fields of patient creation.
     @FXML
-    protected void clearButtonClick(){
+    private void clearButtonClick(){
         nameField.clear();
         patientIdField.clear();
         daysLeftField.clear();
@@ -106,7 +106,7 @@ public class EnterDetailsScreenController {
     }
 
     @FXML
-    protected void saveRoomButtonClick(){
+    private void saveRoomButtonClick(){
         int roomId = Integer.parseInt(roomIdField.getText());
         int roomCapacity = Integer.parseInt(roomCapacityField.getText());
         List<String> diseases = selectedDiseasesLV.getItems();
@@ -116,7 +116,7 @@ public class EnterDetailsScreenController {
     }
 
     @FXML
-    protected void clearRoomButtonClick(){
+    private void clearRoomButtonClick(){
         roomIdField.clear();
         roomCapacityField.clear();
         allDiseasesLV.getItems().addAll(selectedDiseasesLV.getItems());

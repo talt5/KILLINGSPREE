@@ -27,4 +27,14 @@ public class Assignment {
             return "Room " + room.id + " starting at day " + startDay;
         }
     }
+    public Room getRoom() {
+        return room;
+    }
+    public int getStartDay() {
+        return startDay;
+    }
+
+    public boolean getDead() {
+        return dead;
+    }
 }

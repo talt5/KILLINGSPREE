@@ -1,0 +1,119 @@
+package com.taltrakhtenberg.killingspree;
+
+import javafx.fxml.FXML;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
+
+import java.util.HashMap;
+
+public class AssignmentScreenController {
+    private DBmanager db;
+    private HelloApplication mainApp;
+    @FXML
+    private HBox mainHBox;
+    private TilePane mainTilePane;
+    private HashMap<Integer, VBox> roomsObj;
+    private VBox unassignedPatientsVBox;
+
+
+    public void init(DBmanager db, HelloApplication mainApp) {
+        this.db = db;
+        this.mainApp = mainApp;
+        roomsObj = new HashMap<>();
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+        mainTilePane = new TilePane();
+        scrollPane.setContent(mainTilePane);
+        mainHBox.getChildren().add(scrollPane);
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+
+        VBox unassignedVBox = new VBox();
+        String cssLayout = "-fx-border-color: #000000;\n" +
+                "-fx-border-insets: 5;\n" +
+                "-fx-border-width: 3;\n" +
+                "-fx-border-style: solid inside;\n";
+        unassignedVBox.setStyle(cssLayout);
+        Label unassignedPatientsLabel = new Label("Unassigned Patients");
+        unassignedPatientsLabel.setStyle("-fx-font-weight: bold;");
+        unassignedVBox.getChildren().add(unassignedPatientsLabel);
+        Separator separator = new Separator();
+        separator.setOrientation(Orientation.HORIZONTAL);
+        unassignedVBox.getChildren().add(separator);
+        ScrollPane unassignedScrollPane = new ScrollPane();
+        unassignedPatientsVBox = new VBox();
+        unassignedPatientsVBox.setSpacing(10);
+        unassignedScrollPane.setContent(unassignedPatientsVBox);
+        unassignedVBox.getChildren().add(unassignedScrollPane);
+        mainTilePane.getChildren().add(unassignedVBox);
+
+    }
+
+    public void createAssignmentObject(Assignment a, Room r, Patient p) {
+        if (!roomsObj.containsKey(r.getId())) {
+            createRoomObject(r);
+        }
+        VBox patientVBox = new VBox();
+        String cssLayout = "-fx-border-color: #000000;\n" +
+                "-fx-border-insets: 5;\n" +
+                "-fx-border-width: 3;\n" +
+                "-fx-border-style: solid inside;\n";
+        patientVBox.setStyle(cssLayout);
+        patientVBox.setSpacing(10);
+        patientVBox.setAlignment(Pos.CENTER);
+        Label pID = new Label("ID: " + p.getId());
+        if (a.getDead()){
+            patientVBox.getChildren().add(pID);
+            unassignedPatientsVBox.getChildren().add(patientVBox);
+        }
+        else {
+            Label pDaysStaying = new Label("Days Staying: " + p.getDaysRequired());
+            Label pDayEnter = new Label("Entering Day: " + a.getStartDay());
+            patientVBox.getChildren().add(pID);
+            patientVBox.getChildren().add(pDayEnter);
+            patientVBox.getChildren().add(pDaysStaying);
+            roomsObj.get(r.getId()).getChildren().add(patientVBox);
+        }
+    }
+
+    public void createRoomObject(Room r) {
+        VBox roomVBOX = new VBox();
+        String cssLayout = "-fx-border-color: #000000;\n" +
+                "-fx-border-insets: 5;\n" +
+                "-fx-border-width: 3;\n" +
+                "-fx-border-style: solid inside;\n";
+        roomVBOX.setStyle(cssLayout);
+        roomVBOX.setSpacing(5);
+        roomVBOX.setAlignment(Pos.CENTER);
+        Label rID = new Label("ID: " + r.getId());
+        Label rCapacity = new Label("Capacity: " + r.getCapacity());
+        Label diseaseLabel = new Label("Diseases:");
+        ListView<String> diseasesListView = new ListView<>();
+        diseasesListView.setPrefHeight(120);
+        diseasesListView.setPrefWidth(120);
+
+        diseasesListView.getItems().addAll(r.getDiseases());
+        roomVBOX.getChildren().add(rID);
+        roomVBOX.getChildren().add(rCapacity);
+        roomVBOX.getChildren().add(diseaseLabel);
+        roomVBOX.getChildren().add(diseasesListView);
+
+        mainTilePane.getChildren().add(roomVBOX);
+        roomsObj.put(r.getId(), roomVBOX);
+    }
+
+    public TilePane getMainTilePane() {
+        return mainTilePane;
+    }
+
+    public HashMap<Integer, VBox> getRoomsObj() {
+        return roomsObj;
+    }
+}

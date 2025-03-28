@@ -20,7 +20,7 @@ public class CSP_Scheduler {
         occupancy = new HashMap<>();
     }
 
-    public void schedule() {
+    public Map<Integer, Assignment> schedule() {
         // Update correct planning horizon
         for (Patient p : patients) {
             planningHorizon = Math.max(planningHorizon, p.daysLeftToLive);
@@ -60,6 +60,7 @@ public class CSP_Scheduler {
         } else {
             System.out.println("No valid schedule exists for the given set of patients and rooms.");
         }
+        return solution;
     }
 
     private boolean isFeasible(Patient patient, Assignment assign, List<Patient> patients) {
@@ -76,7 +77,7 @@ public class CSP_Scheduler {
         // For each day in the treatment period, check capacity and incompatibility.
         for (int d = assign.startDay; d < assign.startDay + patient.daysRequired; d++) {
             if (d >= planningHorizon) {
-                return false; // beyond planning horizon
+                return true; // beyond planning horizon
             }
             List<Integer> scheduled = occupancy.get(assign.room.id).get(d);
             if (scheduled.size() >= assign.room.capacity) {

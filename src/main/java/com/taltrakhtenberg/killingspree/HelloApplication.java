@@ -14,10 +14,12 @@ public class HelloApplication extends Application {
     private PatientScreenController PSController;
     private EnterDetailsScreenController EDSController;
     private RoomScreenController RSController;
+    private AssignmentScreenController ASController;
     protected List<Room> rooms;
     protected List<Patient> patients;
     protected CSP_Scheduler cspScheduler;
     private DBmanager db;
+    private List<Stage> stages;
 
     @Override
     // Initializes all the screens.
@@ -25,6 +27,7 @@ public class HelloApplication extends Application {
         rooms = new ArrayList<>();
         patients = new ArrayList<>();
         db = new DBmanager("testing.db");
+        stages = new LinkedList<>();
 
         // Delete "testing()" after testing.
         testing();
@@ -37,6 +40,7 @@ public class HelloApplication extends Application {
         stage.setTitle("Main Menu");
         stage.setScene(MMscene);
         stage.show();
+        stages.add(stage);
 
         // Patient List Screen
         FXMLLoader PatientScreen = new FXMLLoader(HelloApplication.class.getResource("PatientScreen.fxml"));
@@ -49,6 +53,7 @@ public class HelloApplication extends Application {
         PSStage.setX(stage.getX() - PSscene.getWidth());
         PSStage.setY(stage.getY());
         PSStage.show();
+        stages.add(PSStage);
 
         // Enter Details Screen
         FXMLLoader EnterDetailsScreen = new FXMLLoader(HelloApplication.class.getResource("EnterDetailsScreen.fxml"));
@@ -62,6 +67,8 @@ public class HelloApplication extends Application {
         EDSStage.resizableProperty().setValue(false);
         EDSStage.setX(stage.getX() + stage.getWidth()/2 - EDSScene.getWidth()/2);
         EDSStage.setY(stage.getY() - EDSStage.getHeight());
+        stages.add(EDSStage);
+
 
         // Room List Screen
         FXMLLoader RoomScreen = new FXMLLoader(HelloApplication.class.getResource("RoomScreen.fxml"));
@@ -74,6 +81,7 @@ public class HelloApplication extends Application {
         RSStage.show();
         RSStage.setX(stage.getX() + stage.getWidth());
         RSStage.setY(stage.getY());
+        stages.add(RSStage);
 
     }
     // Adds all the patients from the List to the ui.
@@ -91,13 +99,47 @@ public class HelloApplication extends Application {
 
     // Deletes from ui all of the patients.
     public void deleteViewAllPatients() {
-        PSController.getMainPatientTilePane().getChildren().clear();
+        PSController.getMainTilePane().getChildren().clear();
         PSController.getPatientsObj().clear();
     }
 
     public void deleteViewAllRooms(){
-        RSController.getMainRoomTilePane().getChildren().clear();
+        RSController.getMainTilePane().getChildren().clear();
         RSController.getRoomsObj().clear();
+    }
+
+    public void closeAllWindows() {
+        for (Stage stage : stages) {
+            stage.close();
+        }
+    }
+
+    public void schedule(){
+        cspScheduler = new CSP_Scheduler(patients, rooms);
+        Map<Integer, Assignment> assignments = cspScheduler.schedule();
+        closeAllWindows();
+        openAssignmentScreen();
+        for (Patient p : patients) {
+            Assignment assignment = assignments.get(p.getId());
+            ASController.createAssignmentObject(assignment, assignment.getRoom(), p);
+        }
+    }
+
+    public void openAssignmentScreen() {
+        try {
+            FXMLLoader AssignmentScreen = new FXMLLoader(HelloApplication.class.getResource("AssignmentScreen.fxml"));
+            Scene ASScene = new Scene(AssignmentScreen.load(), 300, 400); // 🍑
+            ASController = AssignmentScreen.getController();
+            ASController.init(db, this);
+            Stage ASStage = new Stage(); // more 🍑
+            ASStage.setTitle("Assignment Screen");
+            ASStage.setScene(ASScene);
+            ASStage.show();
+            closeAllWindows();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Adds the patient to the List, the db, and the ui.
