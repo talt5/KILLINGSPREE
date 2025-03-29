@@ -3,7 +3,6 @@ package com.taltrakhtenberg.killingspree;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 
 import java.util.Optional;
 
@@ -18,7 +17,6 @@ public class MainMenuController {
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Are you sure you want to LOAD hospital information?");
         alert.setContentText("This will OVERWRITE your current data.");
-        alert.showAndWait();
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             LoadHospitalAction();

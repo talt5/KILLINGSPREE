@@ -104,13 +104,13 @@ public class CSP_Scheduler {
     }
 
     private void addAssignmentToOccupancy(Patient patient, Assignment assign) {
-        for (int d = assign.startDay; d < assign.startDay + patient.daysRequired; d++) {
+        for (int d = assign.startDay; d < Math.min(assign.startDay + patient.daysRequired, planningHorizon); d++) {
             occupancy.get(assign.room.id).get(d).add(patient.id);
         }
     }
 
     private void removeAssignmentFromOccupancy(Patient patient, Assignment assign) {
-        for (int d = assign.startDay; d < assign.startDay + patient.daysRequired; d++) {
+        for (int d = assign.startDay; d < Math.min(assign.startDay + patient.daysRequired, planningHorizon); d++) {
             occupancy.get(assign.room.id).get(d).remove((Integer) patient.id);
         }
     }

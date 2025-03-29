@@ -53,9 +53,15 @@ public class RoomScreenController {
         roomVBOX.getChildren().add(rCapacity);
         roomVBOX.getChildren().add(diseaseLabel);
         roomVBOX.getChildren().add(diseasesListView);
-
+        roomVBOX.setOnMouseClicked(event -> mainApp.deleteRoom(r));
         mainTilePane.getChildren().add(roomVBOX);
         roomsObj.put(r.getId(), roomVBOX);
+    }
+
+    public void deleteRoomObject(Room r) {
+        VBox roomVBOX = roomsObj.get(r.getId());
+        roomsObj.remove(r.getId());
+        mainTilePane.getChildren().remove(roomVBOX);
     }
 
     public TilePane getMainTilePane() {

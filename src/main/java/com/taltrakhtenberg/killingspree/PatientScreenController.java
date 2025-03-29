@@ -51,9 +51,15 @@ public class PatientScreenController {
         patientVBOX.getChildren().add(pDisease);
         patientVBOX.getChildren().add(pDaysReq);
         patientVBOX.getChildren().add(pDaysLeft);
-
+        patientVBOX.setOnMouseClicked(event -> mainApp.deletePatient(p));
         mainTilePane.getChildren().add(patientVBOX);
         patientsObj.put(p.getId(), patientVBOX);
+    }
+
+    public void deletePatientObject(Patient p) {
+        VBox patientVBOX = patientsObj.get(p.getId());
+        patientsObj.remove(p.getId());
+        mainTilePane.getChildren().remove(patientVBOX);
     }
 
     public TilePane getMainTilePane() {

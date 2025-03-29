@@ -29,11 +29,13 @@ public class AssignmentScreenController {
         this.mainApp = mainApp;
         roomsObj = new HashMap<>();
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
         mainTilePane = new TilePane();
         scrollPane.setContent(mainTilePane);
         mainHBox.getChildren().add(scrollPane);
-        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+        HBox.setHgrow(scrollPane, Priority.ALWAYS);
+
+        mainTilePane.maxHeightProperty().bind(mainHBox.heightProperty());
 
         VBox unassignedVBox = new VBox();
         String cssLayout = "-fx-border-color: #000000;\n" +
@@ -98,15 +100,24 @@ public class AssignmentScreenController {
         ListView<String> diseasesListView = new ListView<>();
         diseasesListView.setPrefHeight(120);
         diseasesListView.setPrefWidth(120);
+        ScrollPane roomScroll = new ScrollPane();
+        VBox pVBox = new VBox();
+        pVBox.setSpacing(10);
+        pVBox.setAlignment(Pos.CENTER);
+        roomScroll.setContent(pVBox);
+        roomScroll.setFitToWidth(true);
+        VBox.setVgrow(pVBox, Priority.NEVER);
 
         diseasesListView.getItems().addAll(r.getDiseases());
         roomVBOX.getChildren().add(rID);
         roomVBOX.getChildren().add(rCapacity);
         roomVBOX.getChildren().add(diseaseLabel);
         roomVBOX.getChildren().add(diseasesListView);
+        roomVBOX.getChildren().add(roomScroll);
 
         mainTilePane.getChildren().add(roomVBOX);
-        roomsObj.put(r.getId(), roomVBOX);
+        roomsObj.put(r.getId(), pVBox);
+
     }
 
     public TilePane getMainTilePane() {

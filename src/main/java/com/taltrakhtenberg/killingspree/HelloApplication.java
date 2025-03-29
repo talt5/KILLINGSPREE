@@ -154,23 +154,29 @@ public class HelloApplication extends Application {
         db.insert(r);
         RSController.createRoomObject(r);
     }
-    /*
-    INSTRUCTIONS FOR FIRST RUN - Until UI is ready:
-    To check if db works, click "Save Hospital" (data is already present in memory).
-    Now click on "Load Hospital"
-    The Patient list should populate and console will show the objects that loaded from db.
-     */
+
+    public void deletePatient(Patient p) {
+        patients.remove(p);
+        db.delete(p);
+        PSController.deletePatientObject(p);
+    }
+    public void deleteRoom(Room r) {
+        rooms.remove(r);
+        db.delete(r);
+        RSController.deleteRoomObject(r);
+    }
+
     public static void main(String[] args) {
         launch();
     }
 
     public void testing(){
-        rooms = Arrays.asList(
+        rooms = new ArrayList<>(Arrays.asList(
                 new Room(101, 2, Arrays.asList("COVID-19", "Flu")),
                 new Room(102, 1, Arrays.asList("Heart Disease")),
-                new Room(103, 1, Arrays.asList("Diabetes", "Flu"))
+                new Room(103, 1, Arrays.asList("Diabetes", "Flu")))
         );
-        patients = Arrays.asList(
+        patients = new ArrayList<>(Arrays.asList(
                 new Patient(1, "COVID-19", 10, 20),
                 new Patient(2, "Flu", 5, 15),
                 new Patient(3, "Heart Disease", 7, 7),
@@ -181,7 +187,7 @@ public class HelloApplication extends Application {
                 new Patient(8, "Heart Disease", 9, 7),
                 new Patient(9, "Diabetes", 4, 3),
                 new Patient(10, "Flu", 6, 10)
-        );
+        ));
     }
 
 }
