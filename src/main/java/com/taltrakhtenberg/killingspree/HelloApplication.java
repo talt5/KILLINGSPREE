@@ -30,7 +30,7 @@ public class HelloApplication extends Application {
         stages = new LinkedList<>();
 
         // Delete "testing()" after testing.
-        testing();
+        // testing();
         // Loading Screens
         // Main menu
         FXMLLoader MainMenu = new FXMLLoader(HelloApplication.class.getResource("MainMenu.fxml"));
@@ -164,6 +164,16 @@ public class HelloApplication extends Application {
         rooms.remove(r);
         db.delete(r);
         RSController.deleteRoomObject(r);
+    }
+
+    public void deleteAll(){
+        RSController.getMainTilePane().getChildren().clear();
+        PSController.getMainTilePane().getChildren().clear();
+        PSController.getPatientsObj().clear();
+        RSController.getRoomsObj().clear();
+        rooms.clear();
+        patients.clear();
+        db.deleteAll();
     }
 
     public static void main(String[] args) {

@@ -1,14 +1,50 @@
 package com.taltrakhtenberg.killingspree;
 
 import java.util.*;
-
+/**
+ * The CSP_Scheduler class schedules patients into rooms over a planning horizon
+ * using a constraint satisfaction problem (CSP) approach with forward checking.
+ * It considers factors such as room capacity, disease compatibility, and treatment deadlines.
+ *
+ * <p>Each patient is assigned to a room with a specific start day for treatment,
+ * or marked as dead if no valid schedule exists. The scheduling process computes
+ * the domains of possible assignments for each patient, then uses forward checking
+ * with the Minimum Remaining Values (MRV) heuristic to find a valid schedule.</p>
+ *
+ * <p>Note: The Patient, Room, and Assignment classes must be defined elsewhere
+ * and are expected to provide fields such as {@code id}, {@code disease},
+ * {@code daysLeftToLive}, {@code daysRequired}, etc.</p>
+ */
 public class CSP_Scheduler {
-    List<Patient> patients; // maybe make it a linked list?
+    /**
+     * List of patients to be scheduled.
+     */
+    List<Patient> patients;
+    /**
+     * List of available rooms.
+     */
     List<Room> rooms;
+    /**
+     * Map containing disease incompatibility relationships.
+     * The key is a disease and the value is a set of diseases that are incompatible with it.
+     */
     Map<String, Set<String>> diseaseIncompatibility;
+    /**
+     * The planning horizon, defined as the maximum number of days left to live among all patients.
+     */
     int planningHorizon;
+    /**
+     * Occupancy map which keeps track of room assignments per day.
+     * The key is a room id and the value is a list (indexed by day) of patient ids scheduled on that day.
+     */
     Map<Integer, List<List<Integer>>> occupancy;
 
+    /**
+     * Constructs a CSP_Scheduler with the given patients and rooms.
+     *
+     * @param patients the list of patients to be scheduled
+     * @param rooms the list of available rooms
+     */
     public CSP_Scheduler(List<Patient> patients, List<Room> rooms) {
         // Variable inits
         this.patients = patients;
@@ -20,6 +56,17 @@ public class CSP_Scheduler {
         occupancy = new HashMap<>();
     }
 
+    /**
+     * Schedules patients into rooms based on their treatment requirements and constraints.
+     * <p>
+     * The method calculates the planning horizon, initializes occupancy for each room,
+     * computes the domain of assignments for each patient, and applies forward checking
+     * to generate a schedule.
+     * </p>
+     *
+     * @return a map of patient id to their corresponding Assignment if a valid schedule is found;
+     *         otherwise, returns null.
+     */
     public Map<Integer, Assignment> schedule() {
         // Update correct planning horizon
         for (Patient p : patients) {
@@ -63,6 +110,15 @@ public class CSP_Scheduler {
         return solution;
     }
 
+    /**
+     * Checks whether a given assignment for a patient is feasible with respect to
+     * room capabilities, treatment deadlines, occupancy, and disease incompatibility.
+     *
+     * @param patient the patient for which the assignment is to be checked
+     * @param assign the proposed assignment
+     * @param patients the list of all patients for compatibility checks
+     * @return true if the assignment is feasible; false otherwise
+     */
     private boolean isFeasible(Patient patient, Assignment assign, List<Patient> patients) {
         // Dead assignment is always allowed.
         if (assign.dead) return true;
@@ -103,18 +159,42 @@ public class CSP_Scheduler {
         return true;
     }
 
+    /**
+     * Adds the given patient's assignment to the occupancy schedule.
+     *
+     * @param patient the patient to be scheduled
+     * @param assign the assignment containing room and start day information
+     */
     private void addAssignmentToOccupancy(Patient patient, Assignment assign) {
         for (int d = assign.startDay; d < Math.min(assign.startDay + patient.daysRequired, planningHorizon); d++) {
             occupancy.get(assign.room.id).get(d).add(patient.id);
         }
     }
 
+    /**
+     * Removes the given patient's assignment from the occupancy schedule.
+     *
+     * @param patient the patient whose assignment is to be removed
+     * @param assign the assignment containing room and start day information
+     */
     private void removeAssignmentFromOccupancy(Patient patient, Assignment assign) {
         for (int d = assign.startDay; d < Math.min(assign.startDay + patient.daysRequired, planningHorizon); d++) {
             occupancy.get(assign.room.id).get(d).remove((Integer) patient.id);
         }
     }
 
+    /**
+     * Computes the domain of possible assignments for a given patient.
+     * <p>
+     * For each room capable of treating the patient's disease, possible assignments are generated
+     * with start days that allow treatment to complete before the patient runs out of days.
+     * Additionally, a dead assignment is always included.
+     * </p>
+     *
+     * @param patient the patient for whom the domain is to be computed
+     * @param rooms the list of available rooms
+     * @return a list of possible Assignments for the patient
+     */
     private List<Assignment> computeDomain(Patient patient, List<Room> rooms) {
         List<Assignment> domain = new ArrayList<>();
         // For each room that can treat the disease...
@@ -131,6 +211,12 @@ public class CSP_Scheduler {
         return domain;
     }
 
+    /**
+     * Creates a deep copy of the current domains for each patient.
+     *
+     * @param domains the current map of patient id to list of assignments
+     * @return a cloned map of the domains for forward checking
+     */
     private Map<Integer, List<Assignment>> cloneDomains(Map<Integer, List<Assignment>> domains) {
         Map<Integer, List<Assignment>> copy = new HashMap<>();
         for (Map.Entry<Integer, List<Assignment>> entry : domains.entrySet()) {
@@ -139,6 +225,21 @@ public class CSP_Scheduler {
         return copy;
     }
 
+    /**
+     * Applies forward checking to assign patients to rooms.
+     * <p>
+     * This recursive method selects an unassigned patient (using the Minimum Remaining Values heuristic),
+     * checks feasible assignments, updates occupancy and domains, and recurses until either a complete
+     * assignment is found or failure occurs, prompting backtracking.
+     * </p>
+     *
+     * @param assignments current assignments of patients
+     * @param domains current domains of possible assignments for each patient
+     * @param patients the list of all patients
+     * @param rooms the list of available rooms
+     * @param unassigned the set of unassigned patient ids
+     * @return a map of patient id to Assignment if a valid schedule is found; otherwise, null
+     */
     private Map<Integer, Assignment> forwardCheck(Map<Integer, Assignment> assignments,
                                                   Map<Integer, List<Assignment>> domains,
                                                   List<Patient> patients,

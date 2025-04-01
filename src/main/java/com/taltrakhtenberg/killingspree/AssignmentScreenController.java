@@ -44,7 +44,8 @@ public class AssignmentScreenController {
                 "-fx-border-style: solid inside;\n";
         unassignedVBox.setStyle(cssLayout);
         Label unassignedPatientsLabel = new Label("Unassigned Patients");
-        unassignedPatientsLabel.setStyle("-fx-font-weight: bold;");
+        unassignedPatientsLabel.setStyle("-fx-font-weight: bold;" +
+                "-fx-font-size: 18px;");
         unassignedVBox.getChildren().add(unassignedPatientsLabel);
         Separator separator = new Separator();
         separator.setOrientation(Orientation.HORIZONTAL);
@@ -94,9 +95,13 @@ public class AssignmentScreenController {
         roomVBOX.setStyle(cssLayout);
         roomVBOX.setSpacing(5);
         roomVBOX.setAlignment(Pos.CENTER);
-        Label rID = new Label("ID: " + r.getId());
+        Label rID = new Label("Room " + r.getId());
+        rID.setStyle("-fx-font-weight: bold;" +
+                "-fx-font-size: 18px;");
         Label rCapacity = new Label("Capacity: " + r.getCapacity());
         Label diseaseLabel = new Label("Diseases:");
+        Label lPatients = new Label("Patients:");
+        lPatients.setStyle("-fx-font-size: 18px;");
         ListView<String> diseasesListView = new ListView<>();
         diseasesListView.setPrefHeight(120);
         diseasesListView.setPrefWidth(120);
@@ -113,6 +118,7 @@ public class AssignmentScreenController {
         roomVBOX.getChildren().add(rCapacity);
         roomVBOX.getChildren().add(diseaseLabel);
         roomVBOX.getChildren().add(diseasesListView);
+        roomVBOX.getChildren().add(lPatients);
         roomVBOX.getChildren().add(roomScroll);
 
         mainTilePane.getChildren().add(roomVBOX);

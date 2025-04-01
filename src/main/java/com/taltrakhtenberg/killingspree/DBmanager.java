@@ -222,4 +222,19 @@ public class DBmanager {
             return -1;
         }
     }
+    public void deleteAll() {
+        try {
+            String selectString = "DELETE FROM room";
+            PreparedStatement stmt = conn.prepareStatement(selectString);
+            stmt.executeUpdate();
+            selectString = "DELETE FROM patient";
+            stmt = conn.prepareStatement(selectString);
+            stmt.executeUpdate();
+            selectString = "DELETE FROM diseases";
+            stmt = conn.prepareStatement(selectString);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -11,16 +11,16 @@
    <children>
       <HBox alignment="CENTER" prefHeight="43.0" prefWidth="336.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#ScheduleClick" text="SCHEDULE" />
+            <Button mnemonicParsing="false" onAction="#scheduleClick" text="SCHEDULE" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="58.0" prefWidth="336.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#SaveHospitalClick" text="Save Hospital" />
-            <Separator prefHeight="4.0" prefWidth="30.0" />
-            <Button mnemonicParsing="false" text="New Hospital" />
+<!--             <Button mnemonicParsing="false" onAction="#saveHospitalClick" text="Save Hospital" /> -->
+<!--             <Separator prefHeight="4.0" prefWidth="30.0" /> -->
+            <Button mnemonicParsing="false" onAction="#newHospitalClick" text="New Hospital" />
             <Separator prefHeight="7.0" prefWidth="30.0" />
-            <Button mnemonicParsing="false" onAction="#LoadHospitalClick" text="Load Hospital" />
+            <Button mnemonicParsing="false" onAction="#loadHospitalClick" text="Load Hospital" />
          </children>
       </HBox>
    </children>

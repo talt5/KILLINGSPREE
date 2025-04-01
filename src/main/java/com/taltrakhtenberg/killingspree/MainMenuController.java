@@ -3,6 +3,7 @@ package com.taltrakhtenberg.killingspree;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.stage.FileChooser;
 
 import java.util.Optional;
 
@@ -13,17 +14,17 @@ public class MainMenuController {
 
     @FXML
     // Opens an Alert for confirming the loading operation.
-    protected void LoadHospitalClick(){
+    protected void loadHospitalClick(){
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Are you sure you want to LOAD hospital information?");
-        alert.setContentText("This will OVERWRITE your current data.");
+        alert.setContentText("This action will OVERWRITE your current data.");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            LoadHospitalAction();
+            loadHospitalAction();
         }
     }
     // Loads the hospital information from db into apps Lists not including schedule.
-    protected void LoadHospitalAction() {
+    protected void loadHospitalAction() {
         mainApp.patients = db.getPatients();
         mainApp.rooms = db.getRooms();
         mainApp.deleteViewAllPatients();
@@ -33,30 +34,24 @@ public class MainMenuController {
     }
     @FXML
     // Opens an Alert for confirming the saving operation.
-    protected void SaveHospitalClick(){
+    protected void newHospitalClick(){
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText("Are you sure you want to SAVE hospital information?");
-        alert.setContentText("This will OVERWRITE the database.");
+        alert.setHeaderText("New Hospital");
+        alert.setContentText("This action will DELETE all of your data");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            SaveHospitalAction();
+            newHospitalAction();
         }
+
+
     }
     // Saves the hospital information to db from apps Lists not including schedule.
-    protected void SaveHospitalAction() {
-        for (Room room : mainApp.rooms) {
-            db.insert(room);
-        }
-        for (Patient patient : mainApp.patients) {
-            db.insert(patient);
-        }
-        alert.setAlertType(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Hospital data saved!");
-        alert.showAndWait();
+    protected void newHospitalAction() {
+        mainApp.deleteAll();
     }
     @FXML
     // Calls the func for scheduling and saves the schedule to db.
-    protected void ScheduleClick(){
+    protected void scheduleClick(){
         mainApp.schedule();
     }
     public void init(DBmanager db, HelloApplication mainApp) {
