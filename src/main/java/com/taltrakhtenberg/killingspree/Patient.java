@@ -6,13 +6,13 @@ package com.taltrakhtenberg.killingspree;
  */
 public class Patient {
     /** The unique identifier of the patient. */
-    int id;
+    private int id;
     /** The disease the patient is suffering from. */
-    String disease;
+    private String disease;
     /** The number of days required for the patient's treatment. */
-    int daysRequired;
+    private int daysRequired;
     /** The number of days left before the patient needs to be transferred. */
-    int daysLeftToLive;
+    private int daysLeftToLive;
 
     /**
      * Constructs a new {@code Patient} with the specified attributes.

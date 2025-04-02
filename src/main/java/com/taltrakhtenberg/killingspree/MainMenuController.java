@@ -21,7 +21,7 @@ public class MainMenuController {
      * If confirmed, calls {@link #loadHospitalAction()}.
      */
     @FXML
-    protected void loadHospitalClick(){
+    private void loadHospitalClick(){
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Are you sure you want to LOAD hospital information?");
         alert.setContentText("This action will OVERWRITE your current data.");
@@ -35,7 +35,7 @@ public class MainMenuController {
      * Loads hospital information from the database into the application's lists, excluding schedules.
      * Updates the UI accordingly.
      */
-    protected void loadHospitalAction() {
+    private void loadHospitalAction() {
         mainApp.patients = db.getPatients();
         mainApp.rooms = db.getRooms();
         mainApp.deleteViewAllPatients();
@@ -49,7 +49,7 @@ public class MainMenuController {
      * If confirmed, calls {@link #newHospitalAction()}.
      */
     @FXML
-    protected void newHospitalClick(){
+    private void newHospitalClick(){
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("New Hospital");
         alert.setContentText("This action will DELETE all of your data");
@@ -64,7 +64,7 @@ public class MainMenuController {
     /**
      * Deletes all hospital data from the application and database.
      */
-    protected void newHospitalAction() {
+    private void newHospitalAction() {
         mainApp.deleteAll();
     }
 
@@ -72,7 +72,7 @@ public class MainMenuController {
      * Initiates the scheduling process.
      */
     @FXML
-    protected void scheduleClick(){
+    private void scheduleClick(){
         mainApp.schedule();
     }
 

@@ -22,32 +22,32 @@ public class EnterDetailsScreenController {
 
     // Patient Creation
     @FXML
-    protected Button patientSaveButton;
+    private Button patientSaveButton;
     @FXML
-    protected Button patientClearButton;
+    private Button patientClearButton;
     @FXML
-    protected TextField nameField;
+    private TextField nameField;
     @FXML
-    protected TextField patientIdField;
+    private TextField patientIdField;
     @FXML
-    protected TextField daysLeftField;
+    private TextField daysLeftField;
     @FXML
-    protected TextField daysRequiredField;
+    private TextField daysRequiredField;
     @FXML
-    protected ChoiceBox<String> diseaseSelection;
+    private ChoiceBox<String> diseaseSelection;
     // Room Creation
     @FXML
-    protected ListView<String> allDiseasesLV;
+    private ListView<String> allDiseasesLV;
     @FXML
-    protected ListView<String> selectedDiseasesLV;
+    private ListView<String> selectedDiseasesLV;
     @FXML
-    protected TextField roomIdField;
+    private TextField roomIdField;
     @FXML
-    protected TextField roomCapacityField;
+    private TextField roomCapacityField;
     @FXML
-    protected Button roomSaveButton;
+    private Button roomSaveButton;
     @FXML
-    protected Button roomClearButton;
+    private Button roomClearButton;
 
     /**
      * Initializes the controller with a database manager and main application reference.

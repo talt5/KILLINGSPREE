@@ -9,13 +9,13 @@ import java.util.*;
  */
 public class Room {
     /** The unique identifier for the room. */
-    int id;
+    private int id;
 
     /** The maximum number of patients the room can accommodate. */
-    int capacity;
+    private int capacity;
 
     /** A list of diseases that can be treated in this room. */
-    List<String> diseases;
+    private List<String> diseases;
 
     /**
      * Constructs a Room object with the given ID, capacity, and list of diseases it can treat.

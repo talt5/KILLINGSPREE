@@ -7,13 +7,13 @@ package com.taltrakhtenberg.killingspree;
  */
 public class Assignment {
     /** The room assigned to the patient. */
-    Room room;
+    private Room room;
 
     /** The day on which the treatment starts. */
-    int startDay;
+    private int startDay;
 
     /** Indicates whether the assignment is "dead" (i.e., no treatment assigned). */
-    boolean dead;
+    private boolean dead;
 
     /**
      * Constructs an {@code Assignment} with a specified room and start day.
@@ -48,7 +48,7 @@ public class Assignment {
         if (dead) {
             return "dead";
         } else {
-            return "Room " + room.id + " starting at day " + startDay;
+            return "Room " + room.getId() + " starting at day " + startDay;
         }
     }
 

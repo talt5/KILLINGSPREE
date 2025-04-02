@@ -70,35 +70,35 @@ public class CSP_Scheduler {
     public Map<Integer, Assignment> schedule() {
         // Update correct planning horizon
         for (Patient p : patients) {
-            planningHorizon = Math.max(planningHorizon, p.daysLeftToLive);
+            planningHorizon = Math.max(planningHorizon, p.getDaysLeftToLive());
         }
         for (Room room : rooms) {
             List<List<Integer>> occupancyForRoom = new ArrayList<>();
             for (int d = 0; d < planningHorizon; d++) {
                 occupancyForRoom.add(new ArrayList<>());
             }
-            occupancy.put(room.id, occupancyForRoom);
+            occupancy.put(room.getId(), occupancyForRoom);
         }
         // Compute initial domains for each patient.
         Map<Integer, List<Assignment>> domains = new HashMap<>();
         for (Patient p : patients) {
-            domains.put(p.id, computeDomain(p, rooms));
+            domains.put(p.getId(), computeDomain(p, rooms));
         }
         // Set of unassigned patient ids.
         Set<Integer> unassigned = new HashSet<>();
         for (Patient p : patients) {
-            unassigned.add(p.id);
+            unassigned.add(p.getId());
         }
         Map<Integer, Assignment> solution = forwardCheck(new HashMap<>(), domains, patients, rooms, unassigned);
         if (solution != null) {
             System.out.println("Schedule found:");
             List<Integer> deadPatients = new ArrayList<>();
             for (Patient p : patients) {
-                Assignment a = solution.get(p.id);
-                if (a.dead) {
-                    deadPatients.add(p.id);
+                Assignment a = solution.get(p.getId());
+                if (a.getDead()) {
+                    deadPatients.add(p.getId());
                 } else {
-                    System.out.println("Patient " + p.id + " is scheduled in " + a);
+                    System.out.println("Patient " + p.getId() + " is scheduled in " + a);
                 }
             }
             if (!deadPatients.isEmpty()) {
@@ -121,36 +121,36 @@ public class CSP_Scheduler {
      */
     private boolean isFeasible(Patient patient, Assignment assign, List<Patient> patients) {
         // Dead assignment is always allowed.
-        if (assign.dead) return true;
+        if (assign.getDead()) return true;
         // Check that the room can cure the patient’s disease.
-        if (!assign.room.diseases.contains(patient.disease)) {
+        if (!assign.getRoom().getDiseases().contains(patient.getDisease())) {
             return false;
         }
         // Treatment must complete before patient runs out of days.
-        if (assign.startDay > patient.daysLeftToLive) {
+        if (assign.getStartDay() > patient.getDaysLeftToLive()) {
             return false;
         }
         // For each day in the treatment period, check capacity and incompatibility.
-        for (int d = assign.startDay; d < assign.startDay + patient.daysRequired; d++) {
+        for (int d = assign.getStartDay(); d < assign.getStartDay() + patient.getDaysRequired(); d++) {
             if (d >= planningHorizon) {
                 return true; // beyond planning horizon
             }
-            List<Integer> scheduled = occupancy.get(assign.room.id).get(d);
-            if (scheduled.size() >= assign.room.capacity) {
+            List<Integer> scheduled = occupancy.get(assign.getRoom().getId()).get(d);
+            if (scheduled.size() >= assign.getRoom().getCapacity()) {
                 return false; // capacity exceeded
             }
             // Check incompatibility with already scheduled patients.
             for (Integer otherId : scheduled) {
                 Patient other = null;
                 for (Patient p : patients) {
-                    if (p.id == otherId) {
+                    if (p.getId() == otherId) {
                         other = p;
                         break;
                     }
                 }
                 if (other != null) {
-                    if (diseaseIncompatibility.getOrDefault(patient.disease, Collections.emptySet()).contains(other.disease) ||
-                            diseaseIncompatibility.getOrDefault(other.disease, Collections.emptySet()).contains(patient.disease)) {
+                    if (diseaseIncompatibility.getOrDefault(patient.getDisease(), Collections.emptySet()).contains(other.getDisease()) ||
+                            diseaseIncompatibility.getOrDefault(other.getDisease(), Collections.emptySet()).contains(patient.getDisease())) {
                         return false;
                     }
                 }
@@ -166,8 +166,8 @@ public class CSP_Scheduler {
      * @param assign the assignment containing room and start day information
      */
     private void addAssignmentToOccupancy(Patient patient, Assignment assign) {
-        for (int d = assign.startDay; d < Math.min(assign.startDay + patient.daysRequired, planningHorizon); d++) {
-            occupancy.get(assign.room.id).get(d).add(patient.id);
+        for (int d = assign.getStartDay(); d < Math.min(assign.getStartDay() + patient.getDaysRequired(), planningHorizon); d++) {
+            occupancy.get(assign.getRoom().getId()).get(d).add(patient.getId());
         }
     }
 
@@ -178,8 +178,8 @@ public class CSP_Scheduler {
      * @param assign the assignment containing room and start day information
      */
     private void removeAssignmentFromOccupancy(Patient patient, Assignment assign) {
-        for (int d = assign.startDay; d < Math.min(assign.startDay + patient.daysRequired, planningHorizon); d++) {
-            occupancy.get(assign.room.id).get(d).remove((Integer) patient.id);
+        for (int d = assign.getStartDay(); d < Math.min(assign.getStartDay() + patient.getDaysRequired(), planningHorizon); d++) {
+            occupancy.get(assign.getRoom().getId()).get(d).remove((Integer) patient.getId());
         }
     }
 
@@ -199,9 +199,9 @@ public class CSP_Scheduler {
         List<Assignment> domain = new ArrayList<>();
         // For each room that can treat the disease...
         for (Room room : rooms) {
-            if (!room.diseases.contains(patient.disease)) continue;
+            if (!room.getDiseases().contains(patient.getDisease())) continue;
             // startDay must be such that treatment completes by daysLeft.
-            for (int startDay = 0; startDay <= patient.daysLeftToLive; startDay++) {
+            for (int startDay = 0; startDay <= patient.getDaysLeftToLive(); startDay++) {
                 // At initial state, occupancy is empty so these assignments are acceptable.
                 domain.add(new Assignment(room, startDay));
             }
@@ -263,7 +263,7 @@ public class CSP_Scheduler {
         // Get the patient object.
         Patient patient = null;
         for (Patient p : patients) {
-            if (p.id == selectedId) {
+            if (p.getId() == selectedId) {
                 patient = p;
                 break;
             }
@@ -280,7 +280,7 @@ public class CSP_Scheduler {
 
             // For non-dead assignments, update occupancy.
             boolean occupancyUpdated = false;
-            if (!value.dead) {
+            if (!value.getDead()) {
                 addAssignmentToOccupancy(patient, value);
                 occupancyUpdated = true;
             }
@@ -298,7 +298,7 @@ public class CSP_Scheduler {
                 // Get the patient object.
                 Patient other = null;
                 for (Patient p : patients) {
-                    if (p.id == pid) {
+                    if (p.getId() == pid) {
                         other = p;
                         break;
                     }
