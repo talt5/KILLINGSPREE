@@ -1,10 +1,6 @@
 package com.taltrakhtenberg.killingspree;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -14,6 +10,11 @@ import javafx.scene.control.TextField;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller class for handling the Enter Details screen.
+ * This class manages user input for creating patients and rooms,
+ * and interacts with the database.
+ */
 public class EnterDetailsScreenController {
     private DBmanager db;
     private HelloApplication mainApp;
@@ -48,6 +49,13 @@ public class EnterDetailsScreenController {
     @FXML
     protected Button roomClearButton;
 
+    /**
+     * Initializes the controller with a database manager and main application reference.
+     * Populates disease options and sets up event listeners.
+     *
+     * @param db       The database manager.
+     * @param mainApp  The main application instance.
+     */
     public void init(DBmanager db, HelloApplication mainApp) {
         this.db = db;
         this.mainApp = mainApp;
@@ -81,6 +89,10 @@ public class EnterDetailsScreenController {
 
     }
 
+    /**
+     * Handles the action of saving a new patient.
+     * Extracts user input and creates a Patient object.
+     */
     @FXML
     // Adds the patient to the system.
     private void saveButtonClick(){
@@ -95,6 +107,9 @@ public class EnterDetailsScreenController {
         System.out.println(p);
     }
 
+    /**
+     * Clears all patient input fields.
+     */
     // Clears the fields of patient creation.
     @FXML
     private void clearButtonClick(){
@@ -105,6 +120,10 @@ public class EnterDetailsScreenController {
         diseaseSelection.setValue(null);
     }
 
+    /**
+     * Handles the action of saving a new room.
+     * Extracts user input and creates a Room object.
+     */
     @FXML
     private void saveRoomButtonClick(){
         int roomId = Integer.parseInt(roomIdField.getText());
@@ -115,6 +134,9 @@ public class EnterDetailsScreenController {
         System.out.println(r);
     }
 
+    /**
+     * Clears all room input fields.
+     */
     @FXML
     private void clearRoomButtonClick(){
         roomIdField.clear();

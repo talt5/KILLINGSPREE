@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
+/**
+ * The main application class that initializes and manages the user interface.
+ */
 public class HelloApplication extends Application {
     private MainMenuController MMController;
     private PatientScreenController PSController;
@@ -21,8 +24,13 @@ public class HelloApplication extends Application {
     private DBmanager db;
     private List<Stage> stages;
 
+    /**
+     * Initializes and displays all application screens.
+     *
+     * @param stage The primary stage for the application.
+     * @throws IOException If loading FXML files fails.
+     */
     @Override
-    // Initializes all the screens.
     public void start(Stage stage) throws IOException {
         rooms = new ArrayList<>();
         patients = new ArrayList<>();
@@ -84,36 +92,52 @@ public class HelloApplication extends Application {
         stages.add(RSStage);
 
     }
-    // Adds all the patients from the List to the ui.
-    public void addViewAllPatients() {
+
+    /**
+     * Adds all patients to the user interface.
+     */    public void addViewAllPatients() {
         for (Patient p : patients) {
             PSController.createPatientObject(p);
         }
     }
 
+    /**
+     * Adds all rooms to the user interface.
+     */
     public void addViewAllRooms() {
         for (Room r : rooms) {
             RSController.createRoomObject(r);
         }
     }
 
-    // Deletes from ui all of the patients.
+    /**
+     * Removes all patients from the user interface.
+     */
     public void deleteViewAllPatients() {
         PSController.getMainTilePane().getChildren().clear();
         PSController.getPatientsObj().clear();
     }
 
+    /**
+     * Removes all rooms from the user interface.
+     */
     public void deleteViewAllRooms(){
         RSController.getMainTilePane().getChildren().clear();
         RSController.getRoomsObj().clear();
     }
 
+    /**
+     * Closes all application windows.
+     */
     public void closeAllWindows() {
         for (Stage stage : stages) {
             stage.close();
         }
     }
 
+    /**
+     * Runs the scheduling algorithm and displays the assignment screen.
+     */
     public void schedule(){
         cspScheduler = new CSP_Scheduler(patients, rooms);
         Map<Integer, Assignment> assignments = cspScheduler.schedule();
@@ -125,6 +149,9 @@ public class HelloApplication extends Application {
         }
     }
 
+    /**
+     * Opens the assignment screen.
+     */
     public void openAssignmentScreen() {
         try {
             FXMLLoader AssignmentScreen = new FXMLLoader(HelloApplication.class.getResource("AssignmentScreen.fxml"));
@@ -142,30 +169,53 @@ public class HelloApplication extends Application {
         }
     }
 
-    // Adds the patient to the List, the db, and the ui.
+    /**
+     * Adds a new patient to the list, database, and UI.
+     *
+     * @param p The patient to add.
+     */
     public void addPatient(Patient p) {
         patients.add(p);
         db.insert(p);
         PSController.createPatientObject(p);
     }
 
+    /**
+     * Adds a new room to the list, database, and UI.
+     *
+     * @param r The room to add.
+     */
     public void addRoom(Room r) {
         rooms.add(r);
         db.insert(r);
         RSController.createRoomObject(r);
     }
 
+    /**
+     * Deletes a patient from the list, database, and UI.
+     *
+     * @param p The patient to delete.
+     */
     public void deletePatient(Patient p) {
         patients.remove(p);
         db.delete(p);
         PSController.deletePatientObject(p);
     }
+
+    /**
+     * Deletes a room from the list, database, and UI.
+     *
+     * @param r The room to delete.
+     */
     public void deleteRoom(Room r) {
         rooms.remove(r);
         db.delete(r);
         RSController.deleteRoomObject(r);
     }
 
+    /**
+     * Deletes all rooms and patients from the system and UI.
+     */
     public void deleteAll(){
         RSController.getMainTilePane().getChildren().clear();
         PSController.getMainTilePane().getChildren().clear();
@@ -176,6 +226,11 @@ public class HelloApplication extends Application {
         db.deleteAll();
     }
 
+    /**
+     * Entry point of the JavaFX application.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         launch();
     }

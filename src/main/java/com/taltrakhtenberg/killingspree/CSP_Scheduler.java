@@ -30,7 +30,7 @@ public class CSP_Scheduler {
      */
     Map<String, Set<String>> diseaseIncompatibility;
     /**
-     * The planning horizon, defined as the maximum number of days left to live among all patients.
+     * The planning horizon, defined as the maximum number of days left among all patients.
      */
     int planningHorizon;
     /**

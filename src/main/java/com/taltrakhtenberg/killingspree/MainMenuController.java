@@ -7,13 +7,20 @@ import javafx.stage.FileChooser;
 
 import java.util.Optional;
 
+/**
+ * Controller for the Main Menu screen.
+ * Handles loading, creating a new hospital, and scheduling operations.
+ */
 public class MainMenuController {
     private DBmanager db;
     private HelloApplication mainApp;
     private Alert alert;
 
+    /**
+     * Opens an alert to confirm loading hospital data.
+     * If confirmed, calls {@link #loadHospitalAction()}.
+     */
     @FXML
-    // Opens an Alert for confirming the loading operation.
     protected void loadHospitalClick(){
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Are you sure you want to LOAD hospital information?");
@@ -23,7 +30,11 @@ public class MainMenuController {
             loadHospitalAction();
         }
     }
-    // Loads the hospital information from db into apps Lists not including schedule.
+
+    /**
+     * Loads hospital information from the database into the application's lists, excluding schedules.
+     * Updates the UI accordingly.
+     */
     protected void loadHospitalAction() {
         mainApp.patients = db.getPatients();
         mainApp.rooms = db.getRooms();
@@ -32,8 +43,12 @@ public class MainMenuController {
         mainApp.addViewAllPatients();
         mainApp.addViewAllRooms();
     }
+
+    /**
+     * Opens an alert to confirm creating a new hospital.
+     * If confirmed, calls {@link #newHospitalAction()}.
+     */
     @FXML
-    // Opens an Alert for confirming the saving operation.
     protected void newHospitalClick(){
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("New Hospital");
@@ -45,15 +60,28 @@ public class MainMenuController {
 
 
     }
-    // Saves the hospital information to db from apps Lists not including schedule.
+
+    /**
+     * Deletes all hospital data from the application and database.
+     */
     protected void newHospitalAction() {
         mainApp.deleteAll();
     }
+
+    /**
+     * Initiates the scheduling process.
+     */
     @FXML
-    // Calls the func for scheduling and saves the schedule to db.
     protected void scheduleClick(){
         mainApp.schedule();
     }
+
+    /**
+     * Initializes the controller with database and main application references.
+     *
+     * @param db      Database manager instance.
+     * @param mainApp Main application instance.
+     */
     public void init(DBmanager db, HelloApplication mainApp) {
         this.db = db;
         this.mainApp = mainApp;

@@ -14,6 +14,10 @@ import javafx.scene.layout.VBox;
 
 import java.util.HashMap;
 
+/**
+ * Controller for the Assignment Screen.
+ * Manages the UI for assigning patients to rooms and displaying unassigned patients.
+ */
 public class AssignmentScreenController {
     private DBmanager db;
     private HelloApplication mainApp;
@@ -23,7 +27,11 @@ public class AssignmentScreenController {
     private HashMap<Integer, VBox> roomsObj;
     private VBox unassignedPatientsVBox;
 
-
+    /**
+     * Initializes the assignment screen.
+     * @param db The database manager instance.
+     * @param mainApp The main application instance.
+     */
     public void init(DBmanager db, HelloApplication mainApp) {
         this.db = db;
         this.mainApp = mainApp;
@@ -56,9 +64,14 @@ public class AssignmentScreenController {
         unassignedScrollPane.setContent(unassignedPatientsVBox);
         unassignedVBox.getChildren().add(unassignedScrollPane);
         mainTilePane.getChildren().add(unassignedVBox);
-
     }
 
+    /**
+     * Creates an assignment UI object for a given assignment, room, and patient.
+     * @param a The assignment instance.
+     * @param r The room instance.
+     * @param p The patient instance.
+     */
     public void createAssignmentObject(Assignment a, Room r, Patient p) {
         if (!roomsObj.containsKey(r.getId())) {
             createRoomObject(r);
@@ -72,11 +85,11 @@ public class AssignmentScreenController {
         patientVBox.setSpacing(10);
         patientVBox.setAlignment(Pos.CENTER);
         Label pID = new Label("ID: " + p.getId());
-        if (a.getDead()){
+
+        if (a.getDead()) {
             patientVBox.getChildren().add(pID);
             unassignedPatientsVBox.getChildren().add(patientVBox);
-        }
-        else {
+        } else {
             Label pDaysStaying = new Label("Days Staying: " + p.getDaysRequired());
             Label pDayEnter = new Label("Entering Day: " + a.getStartDay());
             patientVBox.getChildren().add(pID);
@@ -86,6 +99,10 @@ public class AssignmentScreenController {
         }
     }
 
+    /**
+     * Creates a UI representation of a room.
+     * @param r The room instance.
+     */
     public void createRoomObject(Room r) {
         VBox roomVBOX = new VBox();
         String cssLayout = "-fx-border-color: #000000;\n" +
@@ -123,13 +140,20 @@ public class AssignmentScreenController {
 
         mainTilePane.getChildren().add(roomVBOX);
         roomsObj.put(r.getId(), pVBox);
-
     }
 
+    /**
+     * Gets the main tile pane.
+     * @return The TilePane used in the UI.
+     */
     public TilePane getMainTilePane() {
         return mainTilePane;
     }
 
+    /**
+     * Gets the rooms object map.
+     * @return A HashMap of room IDs to their VBox UI elements.
+     */
     public HashMap<Integer, VBox> getRoomsObj() {
         return roomsObj;
     }
