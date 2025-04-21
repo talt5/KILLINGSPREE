@@ -19,8 +19,6 @@
 <!--             <Button mnemonicParsing="false" onAction="#saveHospitalClick" text="Save Hospital" /> -->
 <!--             <Separator prefHeight="4.0" prefWidth="30.0" /> -->
             <Button mnemonicParsing="false" onAction="#newHospitalClick" text="New Hospital" />
-            <Separator prefHeight="7.0" prefWidth="30.0" />
-            <Button mnemonicParsing="false" onAction="#loadHospitalClick" text="Load Hospital" />
          </children>
       </HBox>
    </children>

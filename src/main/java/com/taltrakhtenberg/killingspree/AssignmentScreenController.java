@@ -20,7 +20,7 @@ import java.util.HashMap;
  */
 public class AssignmentScreenController {
     private DBmanager db;
-    private HelloApplication mainApp;
+    private MainApplication mainApp;
     @FXML
     private HBox mainHBox;
     private TilePane mainTilePane;
@@ -32,7 +32,7 @@ public class AssignmentScreenController {
      * @param db The database manager instance.
      * @param mainApp The main application instance.
      */
-    public void init(DBmanager db, HelloApplication mainApp) {
+    public void init(DBmanager db, MainApplication mainApp) {
         this.db = db;
         this.mainApp = mainApp;
         roomsObj = new HashMap<>();
@@ -73,7 +73,7 @@ public class AssignmentScreenController {
      * @param p The patient instance.
      */
     public void createAssignmentObject(Assignment a, Room r, Patient p) {
-        if (!roomsObj.containsKey(r.getId())) {
+        if (!a.getDead() && !roomsObj.containsKey(r.getId())) {
             createRoomObject(r);
         }
         VBox patientVBox = new VBox();

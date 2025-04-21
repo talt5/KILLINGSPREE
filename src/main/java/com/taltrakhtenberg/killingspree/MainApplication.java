@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * The main application class that initializes and manages the user interface.
  */
-public class HelloApplication extends Application {
+public class MainApplication extends Application {
     private MainMenuController MMController;
     private PatientScreenController PSController;
     private EnterDetailsScreenController EDSController;
@@ -20,7 +20,7 @@ public class HelloApplication extends Application {
     private AssignmentScreenController ASController;
     protected List<Room> rooms;
     protected List<Patient> patients;
-    protected CSP_Scheduler cspScheduler;
+    private CSP_Scheduler cspScheduler;
     private DBmanager db;
     private List<Stage> stages;
 
@@ -41,7 +41,7 @@ public class HelloApplication extends Application {
         // testing();
         // Loading Screens
         // Main menu
-        FXMLLoader MainMenu = new FXMLLoader(HelloApplication.class.getResource("MainMenu.fxml"));
+        FXMLLoader MainMenu = new FXMLLoader(MainApplication.class.getResource("MainMenu.fxml"));
         Scene MMscene = new Scene(MainMenu.load(), 400, 240);
         MMController = MainMenu.getController();
         MMController.init(db, this);
@@ -51,7 +51,7 @@ public class HelloApplication extends Application {
         stages.add(stage);
 
         // Patient List Screen
-        FXMLLoader PatientScreen = new FXMLLoader(HelloApplication.class.getResource("PatientScreen.fxml"));
+        FXMLLoader PatientScreen = new FXMLLoader(MainApplication.class.getResource("PatientScreen.fxml"));
         Scene PSscene = new Scene(PatientScreen.load(), 300, 400);
         PSController = PatientScreen.getController();
         PSController.init(db, this);
@@ -64,7 +64,7 @@ public class HelloApplication extends Application {
         stages.add(PSStage);
 
         // Enter Details Screen
-        FXMLLoader EnterDetailsScreen = new FXMLLoader(HelloApplication.class.getResource("EnterDetailsScreen.fxml"));
+        FXMLLoader EnterDetailsScreen = new FXMLLoader(MainApplication.class.getResource("EnterDetailsScreen.fxml"));
         Scene EDSScene = new Scene(EnterDetailsScreen.load(), 600, 345);
         EDSController = EnterDetailsScreen.getController();
         EDSController.init(db, this);
@@ -79,7 +79,7 @@ public class HelloApplication extends Application {
 
 
         // Room List Screen
-        FXMLLoader RoomScreen = new FXMLLoader(HelloApplication.class.getResource("RoomScreen.fxml"));
+        FXMLLoader RoomScreen = new FXMLLoader(MainApplication.class.getResource("RoomScreen.fxml"));
         Scene RSScene = new Scene(RoomScreen.load(), 300, 400);
         RSController = RoomScreen.getController();
         RSController.init(db, this);
@@ -91,11 +91,18 @@ public class HelloApplication extends Application {
         RSStage.setY(stage.getY());
         stages.add(RSStage);
 
+        // Load saved hospital
+        patients = db.getPatients();
+        rooms = db.getRooms();
+        addViewAllPatients();
+        addViewAllRooms();
+
     }
 
     /**
      * Adds all patients to the user interface.
-     */    public void addViewAllPatients() {
+     */
+    public void addViewAllPatients() {
         for (Patient p : patients) {
             PSController.createPatientObject(p);
         }
@@ -154,7 +161,7 @@ public class HelloApplication extends Application {
      */
     public void openAssignmentScreen() {
         try {
-            FXMLLoader AssignmentScreen = new FXMLLoader(HelloApplication.class.getResource("AssignmentScreen.fxml"));
+            FXMLLoader AssignmentScreen = new FXMLLoader(MainApplication.class.getResource("AssignmentScreen.fxml"));
             Scene ASScene = new Scene(AssignmentScreen.load(), 300, 400); // 🍑
             ASController = AssignmentScreen.getController();
             ASController.init(db, this);

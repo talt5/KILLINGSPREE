@@ -67,7 +67,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.taltrakhtenberg.killingspree/com.taltrakhtenberg.killingspree.HelloApplication
+                                com.taltrakhtenberg.killingspree/com.taltrakhtenberg.killingspree.MainApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
