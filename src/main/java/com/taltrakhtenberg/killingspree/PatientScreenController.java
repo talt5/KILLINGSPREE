@@ -16,7 +16,7 @@ import java.util.HashMap;
  */
 public class PatientScreenController {
     private DBmanager db;
-    private HelloApplication mainApp;
+    private MainApplication mainApp;
 
     @FXML
     private VBox mainVBox;
@@ -30,7 +30,7 @@ public class PatientScreenController {
      * @param db      The database manager for handling data operations.
      * @param mainApp The main application instance for handling interactions.
      */
-    public void init(DBmanager db, HelloApplication mainApp) {
+    public void init(DBmanager db, MainApplication mainApp) {
         this.db = db;
         this.mainApp = mainApp;
         patientsObj = new HashMap<>();

@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class EnterDetailsScreenController {
     private DBmanager db;
-    private HelloApplication mainApp;
+    private MainApplication mainApp;
     private List<String> diseases;
 
     // Patient Creation
@@ -56,7 +56,7 @@ public class EnterDetailsScreenController {
      * @param db       The database manager.
      * @param mainApp  The main application instance.
      */
-    public void init(DBmanager db, HelloApplication mainApp) {
+    public void init(DBmanager db, MainApplication mainApp) {
         this.db = db;
         this.mainApp = mainApp;
         diseases = new ArrayList<>();

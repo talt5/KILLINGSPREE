@@ -3,7 +3,6 @@ package com.taltrakhtenberg.killingspree;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.stage.FileChooser;
 
 import java.util.Optional;
 
@@ -13,36 +12,8 @@ import java.util.Optional;
  */
 public class MainMenuController {
     private DBmanager db;
-    private HelloApplication mainApp;
+    private MainApplication mainApp;
     private Alert alert;
-
-    /**
-     * Opens an alert to confirm loading hospital data.
-     * If confirmed, calls {@link #loadHospitalAction()}.
-     */
-    @FXML
-    private void loadHospitalClick(){
-        alert.setAlertType(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText("Are you sure you want to LOAD hospital information?");
-        alert.setContentText("This action will OVERWRITE your current data.");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            loadHospitalAction();
-        }
-    }
-
-    /**
-     * Loads hospital information from the database into the application's lists, excluding schedules.
-     * Updates the UI accordingly.
-     */
-    private void loadHospitalAction() {
-        mainApp.patients = db.getPatients();
-        mainApp.rooms = db.getRooms();
-        mainApp.deleteViewAllPatients();
-        mainApp.deleteViewAllRooms();
-        mainApp.addViewAllPatients();
-        mainApp.addViewAllRooms();
-    }
 
     /**
      * Opens an alert to confirm creating a new hospital.
@@ -82,7 +53,7 @@ public class MainMenuController {
      * @param db      Database manager instance.
      * @param mainApp Main application instance.
      */
-    public void init(DBmanager db, HelloApplication mainApp) {
+    public void init(DBmanager db, MainApplication mainApp) {
         this.db = db;
         this.mainApp = mainApp;
         alert = new Alert(Alert.AlertType.NONE);

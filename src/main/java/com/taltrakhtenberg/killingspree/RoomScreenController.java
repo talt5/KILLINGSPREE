@@ -16,7 +16,7 @@ import java.util.HashMap;
  */
 public class RoomScreenController {
     private DBmanager db;
-    private HelloApplication mainApp;
+    private MainApplication mainApp;
 
     @FXML
     private VBox mainVBox;
@@ -30,7 +30,7 @@ public class RoomScreenController {
      * @param db       The database manager instance.
      * @param mainApp  The main application instance.
      */
-    public void init(DBmanager db, HelloApplication mainApp) {
+    public void init(DBmanager db, MainApplication mainApp) {
         this.db = db;
         this.mainApp = mainApp;
         roomsObj = new HashMap<>();
