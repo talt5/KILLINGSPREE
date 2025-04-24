@@ -3,6 +3,7 @@ package com.taltrakhtenberg.killingspree;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -48,6 +49,7 @@ public class MainApplication extends Application {
         stage.setTitle("Main Menu");
         stage.setScene(MMscene);
         stage.show();
+        stage.setY(Screen.getPrimary().getBounds().getHeight()/2);
         stages.add(stage);
 
         // Patient List Screen
