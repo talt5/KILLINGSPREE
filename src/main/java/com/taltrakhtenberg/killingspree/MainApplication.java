@@ -39,7 +39,6 @@ public class MainApplication extends Application {
         stages = new LinkedList<>();
 
         // Delete "testing()" after testing.
-        // testing();
         // Loading Screens
         // Main menu
         FXMLLoader MainMenu = new FXMLLoader(MainApplication.class.getResource("MainMenu.fxml"));
@@ -96,6 +95,7 @@ public class MainApplication extends Application {
         // Load saved hospital
         patients = db.getPatients();
         rooms = db.getRooms();
+        // testing();
         addViewAllPatients();
         addViewAllRooms();
 

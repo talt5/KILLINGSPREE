@@ -141,13 +141,7 @@ public class CSP_Scheduler {
             }
             // Check incompatibility with already scheduled patients.
             for (Integer otherId : scheduled) {
-                Patient other = null;
-                for (Patient p : patients) {
-                    if (p.getId() == otherId) {
-                        other = p;
-                        break;
-                    }
-                }
+                Patient other = patients.stream().filter(p -> p.getId() == otherId).findFirst().orElse(null);
                 if (other != null) {
                     if (diseaseIncompatibility.getOrDefault(patient.getDisease(), Collections.emptySet()).contains(other.getDisease()) ||
                             diseaseIncompatibility.getOrDefault(other.getDisease(), Collections.emptySet()).contains(patient.getDisease())) {
@@ -199,11 +193,12 @@ public class CSP_Scheduler {
         List<Assignment> domain = new ArrayList<>();
         // For each room that can treat the disease...
         for (Room room : rooms) {
-            if (!room.getDiseases().contains(patient.getDisease())) continue;
-            // startDay must be such that treatment completes by daysLeft.
-            for (int startDay = 0; startDay <= patient.getDaysLeftToLive(); startDay++) {
-                // At initial state, occupancy is empty so these assignments are acceptable.
-                domain.add(new Assignment(room, startDay));
+            if (room.getDiseases().contains(patient.getDisease())) {
+                // startDay must be such that treatment completes by daysLeft.
+                for (int startDay = 0; startDay <= patient.getDaysLeftToLive(); startDay++) {
+                    // At initial state, occupancy is empty so these assignments are acceptable.
+                    domain.add(new Assignment(room, startDay));
+                }
             }
         }
         // Always include the dead assignment.
@@ -261,73 +256,64 @@ public class CSP_Scheduler {
         }
 
         // Get the patient object.
-        Patient patient = null;
-        for (Patient p : patients) {
-            if (p.getId() == selectedId) {
-                patient = p;
-                break;
-            }
-        }
+        int finalSelectedId = selectedId;
+        Patient patient = patients.stream().filter(p -> p.getId() == finalSelectedId).findFirst().orElse(null);
         if (patient == null) return null; // Should not happen
 
         // Try each value in the domain of the selected patient.
         for (Assignment value : domains.get(selectedId)) {
             // Check if this value is feasible with current occupancy.
-            if (!isFeasible(patient, value, patients)) continue;
-            // Create a copy of the current assignments and domains.
-            Map<Integer, Assignment> newAssignments = new HashMap<>(assignments);
-            newAssignments.put(selectedId, value);
+            if (isFeasible(patient, value, patients)) {
+                // Create a copy of the current assignments and domains.
+                Map<Integer, Assignment> newAssignments = new HashMap<>(assignments);
+                newAssignments.put(selectedId, value);
 
-            // For non-dead assignments, update occupancy.
-            boolean occupancyUpdated = false;
-            if (!value.getDead()) {
-                addAssignmentToOccupancy(patient, value);
-                occupancyUpdated = true;
-            }
+                // For non-dead assignments, update occupancy.
+                boolean occupancyUpdated = false;
+                if (!value.getDead()) {
+                    addAssignmentToOccupancy(patient, value);
+                    occupancyUpdated = true;
+                }
 
-            // Prepare a new domains map for forward checking.
-            Map<Integer, List<Assignment>> newDomains = cloneDomains(domains);
-            // Remove the selected patient from unassigned.
-            Set<Integer> newUnassigned = new HashSet<>(unassigned);
-            newUnassigned.remove(selectedId);
+                // Prepare a new domains map for forward checking.
+                Map<Integer, List<Assignment>> newDomains = cloneDomains(domains);
+                // Remove the selected patient from unassigned.
+                Set<Integer> newUnassigned = new HashSet<>(unassigned);
+                newUnassigned.remove(selectedId);
 
-            // For each remaining unassigned patient, filter its domain.
-            boolean failure = false;
-            for (int pid : newUnassigned) {
-                List<Assignment> filtered = new ArrayList<>();
-                // Get the patient object.
-                Patient other = null;
-                for (Patient p : patients) {
-                    if (p.getId() == pid) {
-                        other = p;
-                        break;
+                // For each remaining unassigned patient, filter its domain.
+                boolean failure = false;
+                for (int pid : newUnassigned) {
+                    List<Assignment> filtered = new ArrayList<>();
+                    // Get the patient object.
+                    Patient other = patients.stream().filter(p -> p.getId() == pid).findFirst().orElse(null);
+                    if (other != null) {
+                        // Filter assignments that are still feasible.
+                        for (Assignment a : newDomains.get(pid)) {
+                            if (isFeasible(other, a, patients)) {
+                                filtered.add(a);
+                            }
+                        }
+                        newDomains.put(pid, filtered);
+                        // If the domain becomes empty, then we have a failure.
+                        if (filtered.isEmpty()) {
+                            failure = true;
+                            break;
+                        }
                     }
                 }
-                if (other == null) continue;
-                // Filter assignments that are still feasible.
-                for (Assignment a : newDomains.get(pid)) {
-                    if (isFeasible(other, a, patients)) {
-                        filtered.add(a);
+
+                if (!failure) {
+                    // Recurse.
+                    Map<Integer, Assignment> result = forwardCheck(newAssignments, newDomains, patients, rooms, newUnassigned);
+                    if (result != null) {
+                        return result;
                     }
                 }
-                newDomains.put(pid, filtered);
-                // If the domain becomes empty, then we have a failure.
-                if (filtered.isEmpty()) {
-                    failure = true;
-                    break;
+                // Backtrack: revert occupancy update.
+                if (occupancyUpdated) {
+                    removeAssignmentFromOccupancy(patient, value);
                 }
-            }
-
-            if (!failure) {
-                // Recurse.
-                Map<Integer, Assignment> result = forwardCheck(newAssignments, newDomains, patients, rooms, newUnassigned);
-                if (result != null) {
-                    return result;
-                }
-            }
-            // Backtrack: revert occupancy update.
-            if (occupancyUpdated) {
-                removeAssignmentFromOccupancy(patient, value);
             }
         }
         return null;
