@@ -70,7 +70,7 @@ public class CSP_Scheduler {
     public Map<Integer, Assignment> schedule() {
         // Update correct planning horizon
         for (Patient p : patients) {
-            planningHorizon = Math.max(planningHorizon, p.getDaysLeftToLive());
+            planningHorizon = Math.max(planningHorizon, p.getDaysLeftToLive() + p.getDaysRequired());
         }
         for (Room room : rooms) {
             List<List<Integer>> occupancyForRoom = new ArrayList<>();
@@ -133,7 +133,7 @@ public class CSP_Scheduler {
         // For each day in the treatment period, check capacity and incompatibility.
         for (int d = assign.getStartDay(); d < assign.getStartDay() + patient.getDaysRequired(); d++) {
             if (d >= planningHorizon) {
-                return true; // beyond planning horizon
+                return false; // beyond planning horizon
             }
             List<Integer> scheduled = occupancy.get(assign.getRoom().getId()).get(d);
             if (scheduled.size() >= assign.getRoom().getCapacity()) {
